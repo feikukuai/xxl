@@ -8,7 +8,7 @@ def run_command(command):
         print(f"An error occurred: {e.stderr}")
 
 # 初始化Git仓库
-run_command('git pull origin main')
+#run_command('git pull origin main')
 run_command('git init')
 
 # 添加所有文件到暂存区
