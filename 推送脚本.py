@@ -9,7 +9,7 @@ def run_command(command):
 
 # 初始化Git仓库
 #run_command('git pull origin main')
-run_command('git init')
+#run_command('git init')
 
 # 添加所有文件到暂存区
 run_command('git add .')
