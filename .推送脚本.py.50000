@@ -1,22 +1,27 @@
 import subprocess
 
-def git_command(command):
-    result = subprocess.run(['git'] + command.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-    if result.returncode == 0:
-        return result.stdout
-    else:
-        raise Exception(f"Git command failed with error: {result.stderr}")
+def run_command(command):
+    try:
+        result = subprocess.run(command, check=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        print(result.stdout)
+    except subprocess.CalledProcessError as e:
+        print(f"An error occurred: {e.stderr}")
 
-# 查看当前git项目的状态
-print(git_command('status'))
+# 初始化Git仓库
+run_command('git init')
 
-# 获取当前分支名称
-print(git_command('rev-parse --abbrev-ref HEAD'))
+# 添加所有文件到暂存区
+run_command('git add .')
 
-# 查看提交历史
-print(git_command('log'))
+# 提交更改
+run_command('git commit -m "Initial commit"')
 
-# 查看远程仓库
-print(git_command('remote -v'))
+# 添加远程仓库
+run_command('git remote add origin git@github.com:feihukuai/word.git')
 
-# ...等等其他git命令
+# 推送到远程仓库
+# 注意：这里没有使用 -u 参数，如果需要可以添加
+run_command('git push origin master')
+
+# 如果你使用的是 'main' 分支，请使用以下命令
+# run_command('git push origin main')
