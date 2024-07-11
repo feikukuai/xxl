@@ -14,7 +14,7 @@ run_command('git init')
 run_command('git add .')
 
 # 提交更改
-run_command('git commit -m "Initial commit"')
+run_command('git commit -m "正确的版本"')
 
 # 添加远程仓库
 run_command('git remote add origin git@github.com:feihukuai/word.git')
