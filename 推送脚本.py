@@ -26,5 +26,6 @@ run_command('git commit -m "正确的版本，测试99"')
 #run_command('git push -u origin main')
 run_command('git push')
 
+run_command('git push origin HEAD:main')
 # 如果你使用的是 'main' 分支，请使用以下命令
 # run_command('git push origin main')
