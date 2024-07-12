@@ -21,24 +21,23 @@ jobs:
     # 接受所有 SDK 许可证
     - name: Accept all SDK licenses
       run: |
+        echo "Accepting SDK licenses..."
         yes | sdkmanager --sdk_root=${ANDROID_SDK_ROOT} --licenses || true
-      # 下面的步骤是重复的，已被注释掉
-      # - name: Accept all SDK licenses
-      #   run: |
-      #     yes | sdkmanager --sdk_root=${ANDROID_SDK_ROOT} --licenses
+        echo "SDK licenses accepted."
 
     # 安装 Android SDK Build-Tools 35
     - name: Set up Android SDK Build-Tools 35
       run: |
+        echo "Installing Build-Tools 35..."
         sdkmanager --sdk_root=${ANDROID_SDK_ROOT} "build-tools;35.0.0"
-        echo "${ANDROID_SDK_ROOT}/build-tools/35.0.0" >>$GITHUB_PATH
+        echo "Build-Tools 35 installed."
 
     # 安装其他必要的 SDK 包
     - name: Install other necessary SDK packages
       run: |
+        echo "Installing other necessary SDK packages..."
         sdkmanager --sdk_root=${ANDROID_SDK_ROOT} "platform-tools" "platforms;android-31"
-        echo "${ANDROID_SDK_ROOT}/platform-tools" >>$GITHUB_PATH
-        echo "${ANDROID_SDK_ROOT}/platforms/android-31" >>$GITHUB_PATH
+        echo "Other necessary SDK packages installed."
 
     # Set up JDK 11
     - name: Set up JDK 11
@@ -56,12 +55,14 @@ jobs:
     # 安装依赖
     - name: Install dependencies
       run: |
+        echo "Installing dependencies..."
         python -m pip install --upgrade pip
-        pip install buildozer cython  # 安装 buildozer 和 cython
+        pip install buildozer cython
 
     # 构建Android应用
     - name: Build Android app
       run: |
+        echo "Building Android app..."
         # 直接构建Android应用，不需要初始化
         buildozer android debug
 
