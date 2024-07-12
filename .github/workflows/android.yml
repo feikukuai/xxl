@@ -22,35 +22,30 @@ jobs:
         python -m pip install --upgrade pip
         pip install buildozer cython  # 安装 buildozer 和 cython
 
+    - name: Set up environment variables
+      run: |
+        ANDROID_SDK_ROOT=$HOME/android-sdk
+        echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT" >>$GITHUB_ENV
+        echo "ANDROID_HOME=$ANDROID_SDK_ROOT" >>$GITHUB_ENV
+        echo "$ANDROID_SDK_ROOT/platform-tools" >>$GITHUB_PATH
+        echo "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin" >>$GITHUB_PATH
+
     - name: Set up Android SDK
       run: |
         # 下载 Android SDK
-        wget https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip -q
-        unzip -q sdk-tools-linux-4333796.zip -d $ANDROID_HOME
-        # 安装 expect
-        sudo apt-get update && sudo apt-get install -y expect
-        # 使用 expect 自动接受许可
-        expect -c "
-          spawn $ANDROID_HOME/tools/bin/sdkmanager --update
-          expect {
-            \"Do you accept the license\" { exp_send \"y\r\"; exp_continue }
-            eof
-          }
-        "
-        expect -c "
-          spawn $ANDROID_HOME/tools/bin/sdkmanager \"platform-tools\" \"build-tools;29.0.3\"
-          expect {
-            \"Do you accept the license\" { exp_send \"y\r\"; exp_continue }
-            eof
-          }
-        "
-        # 添加 Android SDK 到 PATH
-        echo "$ANDROID_HOME/platform-tools" >>$GITHUB_PATH
-        echo "$ANDROID_HOME/build-tools/29.0.3" >>$GITHUB_PATH
+        wget https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip -q || { echo "Failed to download SDK tools"; exit 1; }
+        unzip -q sdk-tools-linux-4333796.zip -d $ANDROID_SDK_ROOT || { echo "Failed to unzip SDK tools"; exit 1; }
+        # 使用 yes 命令自动同意许可证
+        yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null || { echo "Failed to accept SDK licenses"; exit 1; }
+        # 安装 SDK 组件
+        $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "build-tools;29.0.3" "build-tools;35.0.0" > /dev/null || { echo "Failed to install SDK components"; exit 1; }
 
     - name: Check for buildozer.spec
       run: |
-        ls -la  # 列出所有文件以确认 buildozer.spec 的存在
+        if [ ! -f "buildozer.spec" ]; then
+          echo "buildozer.spec not found"
+          exit 1
+        fi
 
     - name: Build Android app
       run: |
