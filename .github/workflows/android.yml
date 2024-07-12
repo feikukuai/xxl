@@ -25,6 +25,7 @@ jobs:
     - name: S1et up environment variables
       run: |       
         
+        
     - name: S2et up environment variables
       run: |       
         sudo apt-get update
@@ -36,7 +37,7 @@ jobs:
     - name: S4et up environment variables
       run: |       
         mkdir -p ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/
-       
+        mkdir -p ~/home/runner/.buildozer/android/platform/android-sdk/tools/bin
     - name: S5et up environment variables
       run: |       
        
@@ -44,7 +45,7 @@ jobs:
        
     - name: S6et up environment variables
       run: |       
-        cp /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/
+        cp /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager ~/home/runner/.buildozer/android/platform/android-sdk/tools/bin/
        
     - name: S7et up environment variables
       run: |       
@@ -52,13 +53,20 @@ jobs:
        
     - name: S8et up environment variables
       run: |       
-        chmod 777 ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/sdkmanager
-        find . -name "sdkmanager"
+        chmod 777 ~/home/runner/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager
+           
+    - name: S9et up environment variables
+      run: |       
+        
+     find / -name sdkmanager
+
 
 
 
     - name: Build Android app
       run: |
+        export PATH="$PATH:/home/runner/.buildozer/android/platform/android-sdk/tools/bin"
+
         buildozer android debug
 
     - name: Upload artifact
