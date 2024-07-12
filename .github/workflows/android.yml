@@ -24,8 +24,13 @@ jobs:
 
     - name: Set up Android SDK
       run: |
-        sdkmanager --update
-        sdkmanager "platform-tools" "build-tools;29.0.3"  # 安装平台工具和构建工具
+        # 下载 Android SDK
+        wget https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip -q
+        unzip -q sdk-tools-linux-4333796.zip -d $ANDROID_HOME
+        # 更新 sdkmanager
+        yes | $ANDROID_HOME/tools/bin/sdkmanager --update
+        # 安装平台工具和构建工具
+        yes | $ANDROID_HOME/tools/bin/sdkmanager "platform-tools" "build-tools;29.0.3"
 
     - name: Add Android SDK to PATH
       run: |
