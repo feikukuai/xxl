@@ -24,7 +24,6 @@ jobs:
 
     - name: S1et up environment variables
       run: |       
-        which sdkmanager
         
     - name: S2et up environment variables
       run: |       
