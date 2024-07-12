@@ -53,6 +53,7 @@ jobs:
     - name: S8et up environment variables
       run: |       
         chmod 777 ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/sdkmanager
+        find . -name "sdkmanager"
 
 
 
