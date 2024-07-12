@@ -62,8 +62,7 @@ jobs:
       - name: Build Android app
         # 运行 Buildozer 命令来构建 Android 应用
         run: 
-          sdkmanager "platforms;android-35"
-
+          
           buildozer android debug
 
       # 名称: 上传构建产物
