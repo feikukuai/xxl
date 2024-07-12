@@ -1,28 +1,70 @@
+# 名称: Android CI
 name: Android CI
 
+# 触发器: 当有代码被推送到仓库时，此工作流将被触发
 on: [push]
 
+# 工作流中的作业列表
 jobs:
+  # 作业的名称
   build:
-
+    # 指定运行作业的虚拟机环境
     runs-on: ubuntu-latest
 
+    # 作业中的步骤列表
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.8'
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install buildozer
-        pip install cython
-    - name: Build Android app
-      run: |
-        buildozer android debug
-    - name: Upload artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: android-app
-        path: ./bin/*.apk
+      # 使用 'actions/checkout' Action 检出仓库代码
+      - uses: actions/checkout@v2
+
+      # 名称: 设置 Python 环境
+      - name: Set up Python
+        # 使用 'actions/setup-python' Action 配置 Python 环境
+        uses: actions/setup-python@v2
+        # 指定要安装的 Python 版本
+        with:
+          python-version: '3.8'
+
+      # 名称: 接受 Android SDK 许可协议
+      - name: Accept Android
+        # 运行以下命令行脚本
+        run: |
+          # 自动接受所有 Android SDK 许可协议
+          # 'yes' 命令将 'y' 发送到标准输出，用于自动确认许可协议
+          # 'sdkmanager --licenses' 命令用于审查和接受 Android SDK 许可协议
+          # '> /dev/null' 将命令的输出重定向到 null 设备，以避免在工作流日志中显示过多信息
+          yes | sdkmanager --licenses > /dev/null
+        # 设置环境变量，这些变量将在 'run' 步骤中的脚本执行时可用
+        env:
+          # 设置环境变量 'ACCEPT_SDK_LICENSES'，其值为 "yes"
+          # 这个环境变量可以用于脚本中，以决定是否自动接受许可协议
+          ACCEPT_SDK_LICENSES: "yes"
+          # 设置 'sdkmanager' 环境变量，其值为 'setup_android' 步骤的输出提供的路径
+          # 这确保了脚本中使用的是正确版本的 'sdkmanager'
+          # 注意：此处的 'setup_android' 步骤必须在工作流中定义，并且提供 'sdkmanager-path' 输出
+          sdkmanager: ${{ steps.setup_android.outputs.sdkmanager-path }}
+
+      # 名称: 安装依赖项
+      - name: Install dependencies
+        # 运行以下命令行脚本
+        run: |
+          # 更新 pip 到最新版本
+          python -m pip install --upgrade pip
+          # 安装 Buildozer，用于构建 Android 应用
+          pip install buildozer
+          # 安装 Cython，可能用于编译 Python 代码为 C 扩展
+          pip install cython
+
+      # 名称: 构建 Android 应用
+      - name: Build Android app
+        # 运行 Buildozer 命令来构建 Android 应用
+        run: |
+          buildozer android debug
+
+      # 名称: 上传构建产物
+      - name: Upload artifact
+        # 使用 'actions/upload-artifact' Action 将构建产物上传为工作流的一个工件
+        uses: actions/upload-artifact@v2
+        # 指定工件名称和工作流日志的路径
+        with:
+          name: android-app
+          path: ./bin/*.apk
