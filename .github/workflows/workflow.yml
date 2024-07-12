@@ -3,8 +3,8 @@ name: Build Android App and EXE
 on: [push]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest  # 使用Ubuntu的最新版作为运行环境
+  build-exe:
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v2
@@ -31,6 +31,12 @@ jobs:
         with:
           name: python-exe
           path: dist/*.exe
+
+  build-android:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
 
       # 安装Android SDK和NDK
       - name: Set up Android SDK and NDK
