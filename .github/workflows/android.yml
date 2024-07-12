@@ -1,63 +1,34 @@
 name: Android CI
 
-# 当有代码被推送到仓库时，此工作流将被触发
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
-# 工作流中的作业列表
 jobs:
-  # 作业的名称
   build:
-    # 指定运行作业的虚拟机环境为最新的 Ubuntu 环境
     runs-on: ubuntu-latest
 
-    # 作业中的步骤列表
     steps:
-      # 使用 'actions/checkout' Action 检出仓库代码
       - uses: actions/checkout@v2
 
-      # 名称: 设置 Python 环境
-      # 使用 'actions/setup-python' Action 配置 Python 环境
       - name: Set up Python
         uses: actions/setup-python@v2
-        # 指定要安装的 Python 版本
         with:
           python-version: '3.8'
 
-      # 名称: 布置环境的工具
-        # 此步骤的目的是安装 Android SDK 工具并设置环境变量
-      - name: 布置环境的工具
+      - name: Set up Android SDK tools
         run: |
-          # 检查 sdkmanager 命令是否可用
           which sdkmanager
-
-          # 更新系统包列表
           apt-get update
-
-          # 安装 Android Interface Definition Language (aidl) 工具
           apt-get install -y aidl
-
-          # 创建所需的目录结构
           mkdir -p ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/
-
-          # 将系统安装的 'aidl' 工具复制到 Buildozer 使用的 Android SDK 目录
           cp /usr/bin/aidl ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/
           cp /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/
-
-          # 更改 'aidl' 文件的权限，使其对所有用户可执行
-          chmod 755 ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/aidl
-          chmod 755 ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/sdkmanager
-
-          # 安装 Cython，一个 Python 到 C 的编译器
+          chmod 777 ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/aidl
+          chmod 777 ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/sdkmanager
           pip3 install cython
-
-          # 安装 Kivy，一个开源的 Python 框架，用于开发多点触控应用程序
           pip3 install kivy
-
-          # 安装 Buildozer，一个用于打包 Kivy 应用的工具
           pip3 install buildozer
-
-          # 检查 sdkmanager 命令是否可用
           which sdkmanager
-
-          # 使用 Buildozer 构建和调试 Android 应用
           buildozer -v android debug
