@@ -23,53 +23,12 @@ jobs:
         # 指定要安装的 Python 版本
         with:
           python-version: '3.8'
+          
 
       # 名称: 接受 Android SDK 许可协议
       - name: Accept Android
         # 运行以下命令行脚本
         run: |
-          export ANDROID_HOME=/usr/local/lib/android/sdk
-          export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$PATH
-          
-
-
-
-
-          yes | sdkmanager --licenses
-          yes | sdkmanager "build-tools;35.0.0"
-          yes | sdkmanager "platforms;android-35"
-          sdkmanager "platforms;android-35"
-
-          sdkmanager "build-tools;25.0.2"
-
-
-
-
-        
-
-      # 名称: 安装依赖项
-      - name: Install dependencies
-        # 运行以下命令行脚本
-        run: |
-          # 更新 pip 到最新版本
-          python -m pip install --upgrade pip
-          # 安装 Buildozer，用于构建 Android 应用
-          pip install buildozer
-          # 安装 Cython，可能用于编译 Python 代码为 C 扩展
-          pip install cython
-
-      # 名称: 构建 Android 应用
-      - name: Build Android app
-        # 运行 Buildozer 命令来构建 Android 应用
-        run: 
-          
-          buildozer android debug
-
-      # 名称: 上传构建产物
-      - name: Upload artifact
-        # 使用 'actions/upload-artifact' Action 将构建产物上传为工作流的一个工件
-        uses: actions/upload-artifact@v2
-        # 指定工件名称和工作流日志的路径
-        with:
-          name: android-app
-          path: ./bin/*.apk
+          pip3 install kivy
+          pip3 install buildozer
+          buildozer -v android debug
