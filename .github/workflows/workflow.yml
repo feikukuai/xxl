@@ -49,6 +49,11 @@ jobs:
       - name: Install Kivy and Buildozer
         run: |
           pip install kivy buildozer
+          # 安装Cython
+    - name: Install Cython
+      run: |
+        pip install cython
+
 
       # 初始化Buildozer环境并构建Android应用
       - name: Build Android App
