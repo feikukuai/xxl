@@ -51,6 +51,8 @@ jobs:
           mkdir -p /home/runner/.buildozer/android/platform/android-sdk/tools/bin
           cp /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager /home/runner/.buildozer/android/platform/android-sdk/tools/bin/
           chmod 777 /home/runner/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager
+          buildozer android.install_platform
+
 
 
 
