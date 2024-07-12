@@ -1,39 +1,77 @@
-name: Run Python script  # 工作流程的名称，在GitHub Actions的UI中显示为“Run Python script”
+name: Build Android App and EXE
 
-on: [push]  # 触发工作流程的事件，这里设置为在代码push到仓库时触发工作流程
+on: [push]
 
-jobs:  # 工作流程中的所有作业列表
-  build:  # 作业的ID，可以用于在工作流程文件中引用此作业
-    runs-on: windows-latest  # 指定作业运行的虚拟机环境，这里使用最新版的Windows虚拟环境
+jobs:
+  build:
+    runs-on: windows-latest
 
-    steps:  # 作业中的步骤列表
-      - uses: actions/checkout@v2  # 使用checkout动作来检出仓库，@v2指定使用的版本
-        # 这一步将克隆您的仓库到虚拟机中，以便进行后续操作
+    steps:
+      - uses: actions/checkout@v2
 
-      - name: Set up Python  # 步骤的名称，将显示在GitHub Actions的UI中
-        uses: actions/setup-python@v2  # 使用setup-python动作来配置Python环境
-        with:  # 配置动作的参数
-          python-version: '3.x'  # 指定要使用的Python版本，这里使用3.x系列中的最新版本
+      # 设置Python环境
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
 
-      - name: Run the script  # 运行Python脚本的步骤
-        run: python hello.py  # 运行Python脚本，这里假设脚本名为hello.py
-        # 这一步将执行您的Python脚本，确保脚本文件名正确，并且在工作流程的上下文中可访问
+      # 安装PyInstaller来构建.exe文件
+      - name: Install PyInstaller
+        run: pip install pyinstaller
 
-      - name: Install PyInstaller  # 安装PyInstaller的步骤
-        run: |  # 运行一系列命令
-          pip install pyinstaller  # 使用pip安装PyInstaller，这是用来构建.exe文件的工具
-          # 这一步确保PyInstaller被安装在虚拟环境中，以便后续步骤可以使用它来打包脚本
-
-      - name: Build EXE  # 构建可执行文件的步骤
+      # 构建可执行文件
+      - name: Build EXE
         run: |
-          pyinstaller --onefile hello.py  # 运行PyInstaller命令来构建.exe文件
-          # --onefile参数告诉PyInstaller将所有依赖打包成一个单一的.exe文件
-          # hello.py是主Python脚本文件名，确保它是正确的，并且在工作流程的上下文中可访问
-          # 注意：如果hello.py不在仓库的根目录下，需要提供正确的相对路径
+          pyinstaller --onefile hello.py
+        # 确保hello.py脚本在正确的路径下
 
-      - name: Upload EXE  # 上传构建的可执行文件的步骤
-        uses: actions/upload-artifact@v2  # 使用upload-artifact动作来上传构建的文件
-        with:  # 配置动作的参数
-          name: python-exe  # 指定上传的文件在Artifact存储中的名称
-          path: dist/*.exe  # 指定要上传的文件路径，这里假设PyInstaller将.exe文件放在dist目录下
-          # 这一步将生成的.exe文件作为Artifact上传，可以在GitHub Actions的UI中下载
+      # 上传.exe文件
+      - name: Upload EXE
+        uses: actions/upload-artifact@v2
+        with:
+          name: python-exe
+          path: dist/*.exe
+
+      # 安装Java和Android SDK
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+
+      # 安装Android NDK
+      - name: Set up NDK
+        uses: android/ndk@v1
+        with:
+          ndk-version: 21.3.6528147
+
+      # 安装Android Build Tools
+      - name: Set up Build Tools
+        uses: android/setup-build-tools@v1
+        with:
+          build-tools-version: 29.0.2
+
+      # 安装Kivy和Buildozer
+      - name: Install Kivy and Buildozer
+        run: |
+          pip install kivy buildozer
+
+      # 初始化Buildozer环境并构建Android应用
+      - name: Build Android App
+        run: |
+          buildozer init
+          # 更新spec文件以适应您的应用需求
+          echo "requirements = kivy" >> ./buildozer.spec
+          echo "title = HelloApp" >> ./buildozer.spec
+          echo "package.name = hello" >> ./buildozer.spec
+          echo "package.domain = org.test" >> ./buildozer.spec
+          # 构建Android应用
+          buildozer android debug
+        working-directory: ./  # 假设您在仓库的根目录下
+
+      # 上传APK
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: android-apk
+          path: ./bin/*.apk
