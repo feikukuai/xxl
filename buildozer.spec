@@ -38,7 +38,9 @@ license = MIT
 
 # (int) Android API to use
 android.api = 28
+android.accept_sdk_license = True
 android.skip_update = False
+
 # (int) Android minimum API
 android.minapi = 21
 
