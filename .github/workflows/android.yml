@@ -30,7 +30,7 @@ jobs:
         # 运行以下命令行脚本
         run: |
           sudo apt-get update
-          sudo apt-get instalbuild-essential
+          
           sudo apt-get install libstdc++6
           sudo apt-get install aidl
           pip3 install cython
