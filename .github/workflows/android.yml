@@ -28,6 +28,8 @@ jobs:
       - name: Accept Android
         # 运行以下命令行脚本
         run: |
+          echo $ANDROID_HOME
+
           sdkmanager --licenses
 
         
