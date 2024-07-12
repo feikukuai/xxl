@@ -27,28 +27,25 @@ jobs:
         # 下载 Android SDK
         wget https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip -q
         unzip -q sdk-tools-linux-4333796.zip -d $ANDROID_HOME
-        # 更新 sdkmanager
-        yes | $ANDROID_HOME/tools/bin/sdkmanager --update
-        # 安装平台工具和构建工具
-        yes | $ANDROID_HOME/tools/bin/sdkmanager "platform-tools" "build-tools;29.0.3"
+        # 安装 expect
+        sudo apt-get update && sudo apt-get install -y expect
+        # 使用 expect 自动接受许可
+        expect -c "
+          spawn $ANDROID_HOME/tools/bin/sdkmanager --update
+          expect {
+            \"Do you accept the license\" { exp_send \"y\r\"; exp_continue }
+            eof
+          }
+        "
+        expect -c "
+          spawn $ANDROID_HOME/tools/bin/sdkmanager \"platform-tools\" \"build-tools;29.0.3\"
+          expect {
+            \"Do you accept the license\" { exp_send \"y\r\"; exp_continue }
+            eof
+          }
+        "
 
     - name: Add Android SDK to PATH
       run: |
         echo "$ANDROID_HOME/platform-tools" >>$GITHUB_PATH
-        echo "$ANDROID_HOME/build-tools/29.0.3" >>$GITHUB_PATH
-      env:
-        ANDROID_HOME: ${{ github.workspace }}/android-sdk-linux
-
-    - name: Check for buildozer.spec
-      run: |
-        ls -la  # 列出所有文件以确认 buildozer.spec 的存在
-
-    - name: Build Android app
-      run: |
-        buildozer android debug
-
-    - name: Upload artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: android-app
-        path: ./bin/*.apk
+        echo "$ANDROID_HOME/build-tools/29.0.3" >>$GIT
