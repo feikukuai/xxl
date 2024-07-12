@@ -28,10 +28,14 @@ jobs:
       - name: Accept Android
         # 运行以下命令行脚本
         run: |
-          find / -name "sdkmanager" 2>/dev/null
-          echo $ANDROID_HOME
+          export ANDROID_HOME=/usr/local/lib/android/sdk
+          export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$PATH
+          
 
-          sdkmanager --licenses
+
+
+          yes | sdkmanager --licenses
+
 
         
 
