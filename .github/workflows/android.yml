@@ -20,8 +20,8 @@ jobs:
       - name: Set up Android SDK tools
         run: |
           which sdkmanager
-          apt-get update
-          apt-get install -y aidl
+          sudo apt-get update
+          sudo apt-get install -y aidl
           mkdir -p ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/
           cp /usr/bin/aidl ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/
           cp /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/
@@ -30,5 +30,4 @@ jobs:
           pip3 install cython
           pip3 install kivy
           pip3 install buildozer
-          which sdkmanager
           buildozer -v android debug
