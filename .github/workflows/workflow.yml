@@ -38,22 +38,22 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      # 安装Android SDK和NDK
-      - name: Set up Android SDK and NDK
+      # 设置Java环境并安装Android SDK和NDK
+      - name: Set up Java and Android SDK
         uses: actions/setup-java@v2
         with:
           java-version: '11'
           distribution: 'adopt'
+          cache: 'gradle'
 
-      # 安装Kivy和Buildozer
-      - name: Install Kivy and Buildozer
+      - name: Install Android SDK and NDK
         run: |
-          pip install kivy buildozer
-          # 安装Cython
-    - name: Install Cython
-      run: |
-        pip install cython
+          sdkmanager "ndk-bundle" "platform-tools" "platforms;android-29"
 
+      # 安装Kivy、Buildozer和Cython
+      - name: Install Kivy, Buildozer and Cython
+        run: |
+          pip install kivy buildozer cython
 
       # 初始化Buildozer环境并构建Android应用
       - name: Build Android App
@@ -66,7 +66,7 @@ jobs:
           echo "package.domain = org.test" >> ./buildozer.spec
           # 构建Android应用
           buildozer android debug
-        working-directory: ./  # 假设您在仓库的根目录下
+        working-directory: ./  # 确保在仓库的根目录下操作
 
       # 上传APK
       - name: Upload APK
