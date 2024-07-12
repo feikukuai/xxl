@@ -42,7 +42,7 @@ jobs:
 
           # 将 Android SDK 的根目录添加到环境变量 'ANDROID_HOME'
           echo "ANDROID_HOME=/usr/local/lib/android/sdk" >> $GITHUB_ENV
-          
+          find / -name sdkmanager 2>/dev/null
           # 将 'sdkmanager' 工具的路径添加到 'PATH' 环境变量中
           echo "PATH=$PATH:/usr/local/lib/android/sdk/cmdline-tools/latest/bin" >>$GITHUB_ENV
 
