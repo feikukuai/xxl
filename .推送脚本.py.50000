@@ -17,12 +17,14 @@ run_command('git add .')
 # 提交更改
 run_command('git commit -m "正确的版本，测试99"')
 
+
 # 添加远程仓库
 #run_command('git remote add origin git@github.com:feihukuai/word.git')
 
 # 推送到远程仓库
 # 注意：这里没有使用 -u 参数，如果需要可以添加
-run_command('git push -u origin main')
+#run_command('git push -u origin main')
+run_command('git push')
 
 # 如果你使用的是 'main' 分支，请使用以下命令
 # run_command('git push origin main')
