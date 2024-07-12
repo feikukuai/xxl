@@ -22,15 +22,37 @@ jobs:
         python -m pip install --upgrade pip
         pip install buildozer cython  # 安装 buildozer 和 cython
 
-    - name: Set up environment variables
+    - name: S1et up environment variables
       run: |       
         which sdkmanager
+        
+    - name: S2et up environment variables
+      run: |       
         sudo apt-get update
+        
+    - name: S3et up environment variables
+      run: |       
         sudo apt-get install -y aidl
+        
+    - name: S4et up environment variables
+      run: |       
         mkdir -p ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/
+       
+    - name: S5et up environment variables
+      run: |       
+       
         cp /usr/bin/aidl ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/
+       
+    - name: S6et up environment variables
+      run: |       
         cp /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/
+       
+    - name: S7et up environment variables
+      run: |       
         chmod 777 ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/aidl
+       
+    - name: S8et up environment variables
+      run: |       
         chmod 777 ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/sdkmanager
 
 
