@@ -20,6 +20,10 @@ jobs:
         echo "JAVA_HOME=/usr/lib/jvm/temurin-11-jdk-amd64" >> $GITHUB_ENV
 
     # 接受所有 SDK 许可证
+        - name: Accept all SDK licenses
+      run: |
+        yes | sdkmanager --sdk_root=${ANDROID_SDK_ROOT} --licenses || true
+
     - name: Accept all SDK licenses
       run: |
         yes | sdkmanager --sdk_root=${ANDROID_SDK_ROOT} --licenses
