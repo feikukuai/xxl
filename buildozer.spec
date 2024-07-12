@@ -9,7 +9,7 @@ package.name = helloapp
 # (str) Package domain (needed for android/ios packaging)
 package.domain = org.test
 
-# (source dir) Source directory
+# (str) Source directory
 source.dir = .
 
 # (list) Source files to include (relative to source.dir)
@@ -33,7 +33,10 @@ version = 0.1
 # (str) Application license
 license = MIT
 
-# (str) Android API to use
+# Android specific
+[android]
+
+# (int) Android API to use
 android.api = 28
 
 # (int) Android minimum API
