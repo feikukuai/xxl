@@ -48,6 +48,12 @@ jobs:
           source $GITHUB_ENV
 
           # 创建 Buildozer 使用的 Android SDK 目录结构
+          mkdir -p /home/runner/.buildozer/android/platform/android-sdk/tools/bin
+          cp /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager /home/runner/.buildozer/android/platform/android-sdk/tools/bin/
+          chmod 777 /home/runner/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager
+
+
+
           mkdir -p ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/
 
           # 显示 'aidl' 工具的安装路径
