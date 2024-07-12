@@ -29,6 +29,8 @@ jobs:
       - name: Accept Android
         # 运行以下命令行脚本
         run: |
+          pip3 install cython
+
           pip3 install kivy
           pip3 install buildozer
           buildozer -v android debug
