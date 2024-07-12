@@ -41,15 +41,17 @@ jobs:
 
       # 安装Android NDK
       - name: Set up NDK
-        uses: android/ndk@v1
+        uses: androidsdk/ndk@v1
         with:
           ndk-version: 21.3.6528147
 
-      # 安装Android Build Tools
-      - name: Set up Build Tools
-        uses: android/setup-build-tools@v1
+      # 安装Android SDK和Build Tools
+      - name: Set up Android SDK and Build Tools
+        uses: actions/setup-android@v2
         with:
-          build-tools-version: 29.0.2
+          sdk-platform: "android-29"  # 设置目标Android平台版本
+          ndk-version: "21.3.6528147"  # 设置NDK版本
+          build-tools-version: "29.0.2"  # 设置Build Tools版本
 
       # 安装Kivy和Buildozer
       - name: Install Kivy and Buildozer
