@@ -19,12 +19,23 @@ jobs:
         echo "ANDROID_HOME=${{ github.workspace }}/android-sdk" >>$GITHUB_ENV
         echo "JAVA_HOME=/usr/lib/jvm/temurin-11-jdk-amd64" >> $GITHUB_ENV
 
-    # 安装 Android SDK Platform-Tools 和 Build-Tools
-    - name: Set up Android SDK Platform-Tools and Build-Tools
+    # 接受所有 SDK 许可证
+    - name: Accept all SDK licenses
       run: |
-        sdkmanager --sdk_root=${ANDROID_SDK_ROOT} "platform-tools" "build-tools;29.0.3" || true
+        yes | sdkmanager --sdk_root=${ANDROID_SDK_ROOT} --licenses
+
+    # 安装 Android SDK Build-Tools 35
+    - name: Set up Android SDK Build-Tools 35
+      run: |
+        sdkmanager --sdk_root=${ANDROID_SDK_ROOT} "build-tools;35.0.0"
+        echo "${ANDROID_SDK_ROOT}/build-tools/35.0.0" >>$GITHUB_PATH
+
+    # 安装其他必要的 SDK 包
+    - name: Install other necessary SDK packages
+      run: |
+        sdkmanager --sdk_root=${ANDROID_SDK_ROOT} "platform-tools" "platforms;android-31"
         echo "${ANDROID_SDK_ROOT}/platform-tools" >>$GITHUB_PATH
-        echo "${ANDROID_SDK_ROOT}/build-tools/29.0.3" >>$GITHUB_PATH
+        echo "${ANDROID_SDK_ROOT}/platforms/android-31" >>$GITHUB_PATH
 
     # Set up JDK 11
     - name: Set up JDK 11
