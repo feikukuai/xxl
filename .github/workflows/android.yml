@@ -46,7 +46,7 @@ jobs:
 
           # 将 Android SDK 的根目录添加到环境变量 'ANDROID_HOME'
           echo "ANDROID_HOME=/usr/local/lib/android/sdk" >> $GITHUB_ENV
-          
+          export PATH="$PATH:/usr/bin/"
           # 设置环境变量 PATH，包括 'sdkmanager' 工具的路径
           echo "PATH=$PATH:/usr/local/lib/android/sdk/cmdline-tools/latest/bin" >>$GITHUB_ENV
           source $GITHUB_ENV
@@ -54,7 +54,8 @@ jobs:
 
           # 显示 'aidl' 工具的安装路径
           
-          
+          mkdir -p ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/
+
           # 将系统安装的 'aidl' 工具复制到 Buildozer 使用的 Android SDK 目录
           cp /usr/bin/aidl ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/
           
