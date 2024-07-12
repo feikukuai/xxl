@@ -35,7 +35,7 @@ jobs:
 
 
           yes | sdkmanager --licenses
-          sdkmanager "build-tools;latest"
+          sdkmanager "build-tools;3.5"
           aidl
 
 
