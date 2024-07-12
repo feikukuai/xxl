@@ -30,7 +30,8 @@ jobs:
         run: |
           export ANDROID_HOME=/usr/local/lib/android/sdk
           export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$PATH
-          
+          find / -name "aidl"
+
 
 
 
@@ -61,7 +62,9 @@ jobs:
       # 名称: 构建 Android 应用
       - name: Build Android app
         # 运行 Buildozer 命令来构建 Android 应用
-        run: |
+        run: 
+          sdkmanager "platforms;android-35"
+
           buildozer android debug
 
       # 名称: 上传构建产物
