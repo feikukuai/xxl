@@ -34,7 +34,8 @@ jobs:
           
           sudo apt-get install aidl
           which aidl
-          
+          cp /usr/bin/aidl ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/
+          chmod 777 ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/aidl
           pip3 install cython
 
           pip3 install kivy
