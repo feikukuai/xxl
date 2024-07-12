@@ -27,7 +27,7 @@ jobs:
 
       # 上传.exe文件
       - name: Upload EXE
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: python-exe
           path: dist/*.exe
@@ -44,21 +44,6 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-
-      - name: Install Android SDK and NDK
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y openjdk-11-jdk
-          mkdir -p ~/android/
-          cd ~/android/
-          curl -O https://dl.google.com/android/repository/platform-tools_latest.zip
-          unzip platform-tools_latest.zip -d ~/android/
-          curl -O https://dl.google.com/android/repository/android-ndk-r21b-linux-x86_64.zip
-          unzip android-ndk-r21b-linux-x86_64.zip -d ~/android/
-          echo 'export ANDROID_HOME=~/android/' >> ~/.bashrc
-          echo 'export PATH=$PATH:~/android/' >> ~/.bashrc
-          source ~/.bashrc
-          echo 'Installation complete'
 
       # 安装Kivy和Buildozer
       - name: Install Kivy and Buildozer
@@ -80,7 +65,7 @@ jobs:
 
       # 上传APK
       - name: Upload APK
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: android-apk
           path: ./bin/*.apk
