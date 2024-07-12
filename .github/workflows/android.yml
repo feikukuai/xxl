@@ -58,7 +58,8 @@ jobs:
     - name: S9et up environment variables
       run: |       
         
-     find / -name sdkmanager
+     locate sdkmanager
+
 
 
 
