@@ -44,13 +44,9 @@ jobs:
             eof
           }
         "
-
-    - name: Add Android SDK to PATH
-      run: |
+        # 添加 Android SDK 到 PATH
         echo "$ANDROID_HOME/platform-tools" >>$GITHUB_PATH
         echo "$ANDROID_HOME/build-tools/29.0.3" >>$GITHUB_PATH
-      env:
-        ANDROID_HOME: ${{ github.workspace }}/android-sdk-linux
 
     - name: Check for buildozer.spec
       run: |
