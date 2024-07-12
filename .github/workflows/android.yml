@@ -40,9 +40,7 @@ jobs:
     # 构建Android应用
     - name: Build Android app
       run: |
-        # 初始化 buildozer 环境
-        buildozer init
-        # 构建Android应用
+        # 直接构建Android应用，不需要初始化
         buildozer android debug
 
     # 上传生成的APK文件
