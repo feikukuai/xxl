@@ -4,7 +4,6 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-20.04
 
     steps:
@@ -20,13 +19,13 @@ jobs:
         echo "JAVA_HOME=/usr/lib/jvm/temurin-11-jdk-amd64" >> $GITHUB_ENV
 
     # 接受所有 SDK 许可证
-        - name: Accept all SDK licenses
-      run: |
-        yes | sdkmanager --sdk_root=${ANDROID_SDK_ROOT} --licenses || true
-
     - name: Accept all SDK licenses
       run: |
-        yes | sdkmanager --sdk_root=${ANDROID_SDK_ROOT} --licenses
+        yes | sdkmanager --sdk_root=${ANDROID_SDK_ROOT} --licenses || true
+      # 下面的步骤是重复的，已被注释掉
+      # - name: Accept all SDK licenses
+      #   run: |
+      #     yes | sdkmanager --sdk_root=${ANDROID_SDK_ROOT} --licenses
 
     # 安装 Android SDK Build-Tools 35
     - name: Set up Android SDK Build-Tools 35
