@@ -40,10 +40,25 @@ jobs:
 
       # 安装Android SDK和NDK
       - name: Set up Android SDK and NDK
-        uses: android-actions/setup-android@v0.2
+        uses: actions/setup-java@v2
         with:
-          sdk-version: '29'
-          ndk-version: '21.3.6528147'
+          java-version: '11'
+          distribution: 'adopt'
+
+      - name: Install Android SDK and NDK
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openjdk-11-jdk
+          mkdir -p ~/android/
+          cd ~/android/
+          curl -O https://dl.google.com/android/repository/platform-tools_latest.zip
+          unzip platform-tools_latest.zip -d ~/android/
+          curl -O https://dl.google.com/android/repository/android-ndk-r21b-linux-x86_64.zip
+          unzip android-ndk-r21b-linux-x86_64.zip -d ~/android/
+          echo 'export ANDROID_HOME=~/android/' >> ~/.bashrc
+          echo 'export PATH=$PATH:~/android/' >> ~/.bashrc
+          source ~/.bashrc
+          echo 'Installation complete'
 
       # 安装Kivy和Buildozer
       - name: Install Kivy and Buildozer
