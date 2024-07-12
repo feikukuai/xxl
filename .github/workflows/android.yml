@@ -47,16 +47,6 @@ jobs:
           echo "PATH=$PATH:/usr/local/lib/android/sdk/cmdline-tools/latest/bin" >>$GITHUB_ENV
           source $GITHUB_ENV
 
-          # 创建 Buildozer 使用的 Android SDK 目录结构
-          mkdir -p /home/runner/.buildozer/android/platform/android-sdk/tools/bin
-          cp /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager /home/runner/.buildozer/android/platform/android-sdk/tools/bin/
-          chmod 777 /home/runner/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager
-          buildozer android.install_platform
-
-
-
-
-          mkdir -p ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/
 
           # 显示 'aidl' 工具的安装路径
           
@@ -76,6 +66,9 @@ jobs:
           
           # 安装 Buildozer，一个用于打包 Kivy 应用的工具
           pip3 install buildozer
+          cp /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager /home/runner/.buildozer/android/platform/android-sdk/tools/bin/
+          chmod 777 /home/runner/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager
+          
           
           # 使用 Buildozer 构建和调试 Android 应用
           buildozer -v android debug
