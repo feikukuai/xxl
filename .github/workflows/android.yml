@@ -30,6 +30,8 @@ jobs:
       - name: Accept Android
         # 运行以下命令行脚本
         run: |
+          export PATH="$PATH:/usr/local/lib/android/sdk/cmdline-tools/latest/bin"
+
           # 更新系统包列表
           sudo apt-get update
           
