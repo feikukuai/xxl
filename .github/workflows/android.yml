@@ -33,6 +33,9 @@ jobs:
           
           
           sudo apt-get install aidl
+          # 创建整个目录结构
+          mkdir -p ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/
+
           which aidl
           cp /usr/bin/aidl ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/
           chmod 777 ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/aidl
