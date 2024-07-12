@@ -1,4 +1,4 @@
-# 名称: Android CI
+# 工作流名称
 name: Android CI
 
 # 触发器: 当有代码被推送到仓库时，此工作流将被触发
@@ -8,7 +8,7 @@ on: [push]
 jobs:
   # 作业的名称
   build:
-    # 指定运行作业的虚拟机环境
+    # 指定运行作业的虚拟机环境为最新的 Ubuntu 环境
     runs-on: ubuntu-latest
 
     # 作业中的步骤列表
@@ -17,8 +17,8 @@ jobs:
       - uses: actions/checkout@v2
 
       # 名称: 设置 Python 环境
+      # 使用 'actions/setup-python' Action 配置 Python 环境
       - name: Set up Python
-        # 使用 'actions/setup-python' Action 配置 Python 环境
         uses: actions/setup-python@v2
         # 指定要安装的 Python 版本
         with:
@@ -26,27 +26,47 @@ jobs:
           
 
       # 名称: 接受 Android SDK 许可协议
+      # 此步骤的目的是安装 Android SDK 工具并设置环境变量
       - name: Accept Android
         # 运行以下命令行脚本
         run: |
+          # 更新系统包列表
           sudo apt-get update
           
-          
+          # 安装 Android Interface Definition Language (aidl) 工具
           sudo apt-get install aidl
-          find / -name sdkmanager 2>/dev/null
+          
+          # 在整个文件系统中搜索 'sdkmanager' 工具的路径
+          # 2>/dev/null 将错误信息重定向到 '/dev/null'，避免它们出现在输出中
+          
 
+          # 将 Android SDK 的根目录添加到环境变量 'ANDROID_HOME'
           echo "ANDROID_HOME=/usr/local/lib/android/sdk" >> $GITHUB_ENV
+          
+          # 将 'sdkmanager' 工具的路径添加到 'PATH' 环境变量中
           echo "PATH=$PATH:/usr/local/lib/android/sdk/cmdline-tools/latest/bin" >>$GITHUB_ENV
 
-
-          # 创建整个目录结构
+          # 创建 Buildozer 使用的 Android SDK 目录结构
           mkdir -p ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/
 
-          which aidl
+          # 显示 'aidl' 工具的安装路径
+          
+          
+          # 将系统安装的 'aidl' 工具复制到 Buildozer 使用的 Android SDK 目录
           cp /usr/bin/aidl ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/
+          
+          # 更改 'aidl' 文件的权限，使其对所有用户可执行
+          # 注意：777 权限过于宽松，建议使用 755 权限
           chmod 777 ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/aidl
+          
+          # 安装 Cython，一个 Python 到 C 的编译器
           pip3 install cython
 
+          # 安装 Kivy，一个开源的 Python 框架，用于开发多点触控应用程序
           pip3 install kivy
+          
+          # 安装 Buildozer，一个用于打包 Kivy 应用的工具
           pip3 install buildozer
+          
+          # 使用 Buildozer 构建和调试 Android 应用
           buildozer -v android debug
