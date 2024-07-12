@@ -1,14 +1,14 @@
-name: Run Python script  # 工作流程的名称，将显示在GitHub Actions的UI中
+name: Run Python script  # 工作流程的名称，在GitHub Actions的UI中显示为“Run Python script”
 
-on: [push]  # 触发工作流程的事件，这里设置为在代码push到仓库时触发
+on: [push]  # 触发工作流程的事件，这里设置为在代码push到仓库时触发工作流程
 
 jobs:  # 工作流程中的所有作业列表
-  build:  # 作业的ID，用于在工作流程文件中引用
-    runs-on: windows-latest  # 指定作业运行的虚拟机环境，这里使用最新版的Ubuntu
+  build:  # 作业的ID，可以用于在工作流程文件中引用此作业
+    runs-on: windows-latest  # 指定作业运行的虚拟机环境，这里使用最新版的Windows虚拟环境
 
     steps:  # 作业中的步骤列表
       - uses: actions/checkout@v2  # 使用checkout动作来检出仓库，@v2指定使用的版本
-        # 这一步将克隆你的仓库到虚拟机中，以便进行后续操作
+        # 这一步将克隆您的仓库到虚拟机中，以便进行后续操作
 
       - name: Set up Python  # 步骤的名称，将显示在GitHub Actions的UI中
         uses: actions/setup-python@v2  # 使用setup-python动作来配置Python环境
@@ -16,16 +16,24 @@ jobs:  # 工作流程中的所有作业列表
           python-version: '3.x'  # 指定要使用的Python版本，这里使用3.x系列中的最新版本
 
       - name: Run the script  # 运行Python脚本的步骤
-        run: python hello.py  # 运行Python脚本，假设脚本名为hello.py
-        # 这一步将执行你的Python脚本，确保脚本文件名正确
+        run: python hello.py  # 运行Python脚本，这里假设脚本名为hello.py
+        # 这一步将执行您的Python脚本，确保脚本文件名正确，并且在工作流程的上下文中可访问
 
       - name: Install PyInstaller  # 安装PyInstaller的步骤
         run: |  # 运行一系列命令
           pip install pyinstaller  # 使用pip安装PyInstaller，这是用来构建.exe文件的工具
+          # 这一步确保PyInstaller被安装在虚拟环境中，以便后续步骤可以使用它来打包脚本
 
       - name: Build EXE  # 构建可执行文件的步骤
         run: |
           pyinstaller --onefile hello.py  # 运行PyInstaller命令来构建.exe文件
           # --onefile参数告诉PyInstaller将所有依赖打包成一个单一的.exe文件
-          # your_script.py是你的主Python脚本文件名，需要替换成你实际的脚本名
-          # 确保脚本文件名正确，且位于仓库的根目录下或工作流程文件中指定的路径下
+          # hello.py是主Python脚本文件名，确保它是正确的，并且在工作流程的上下文中可访问
+          # 注意：如果hello.py不在仓库的根目录下，需要提供正确的相对路径
+
+      - name: Upload EXE  # 上传构建的可执行文件的步骤
+        uses: actions/upload-artifact@v2  # 使用upload-artifact动作来上传构建的文件
+        with:  # 配置动作的参数
+          name: python-exe  # 指定上传的文件在Artifact存储中的名称
+          path: dist/*.exe  # 指定要上传的文件路径，这里假设PyInstaller将.exe文件放在dist目录下
+          # 这一步将生成的.exe文件作为Artifact上传，可以在GitHub Actions的UI中下载
