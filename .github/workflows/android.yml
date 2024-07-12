@@ -31,6 +31,8 @@ jobs:
         # 运行以下命令行脚本
         run: |
           export PATH="$PATH:/usr/local/lib/android/sdk/cmdline-tools/latest/bin"
+          which sdkmanager
+
 
           # 更新系统包列表
           sudo apt-get update
@@ -68,6 +70,9 @@ jobs:
           
           # 安装 Buildozer，一个用于打包 Kivy 应用的工具
           pip3 install buildozer
+           
+          which sdkmanager
+ 
           cp /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager /home/runner/.buildozer/android/platform/android-sdk/tools/bin/
           chmod 777 /home/runner/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager
           
