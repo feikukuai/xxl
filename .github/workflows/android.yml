@@ -30,7 +30,7 @@ jobs:
         run: |
           export ANDROID_HOME=/usr/local/lib/android/sdk
           export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$PATH
-          find / -name "aidl"
+          
 
 
 
@@ -40,8 +40,7 @@ jobs:
           yes | sdkmanager "platforms;android-35"
           sdkmanager "platforms;android-35"
 
-
-          sdkmanager "build-tools;35.0.0"
+          sdkmanager "build-tools;25.0.2"
 
 
 
