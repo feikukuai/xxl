@@ -18,7 +18,7 @@ run_command('git add .')
 run_command('git commit -m "正确的版本，测试99"')
 
 # 添加远程仓库
-#run_command('git remote add origin git@github.com:feihukuai/word.git')
+run_command('git remote add origin git@github.com:feihukuai/xll.git')
 
 # 推送到远程仓库
 # 注意：这里没有使用 -u 参数，如果需要可以添加
