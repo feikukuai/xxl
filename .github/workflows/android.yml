@@ -33,6 +33,8 @@ jobs:
           
           
           sudo apt-get install aidl
+          find / -name sdkmanager 2>/dev/null
+
           export PATH=$PATH:/usr/local/lib/android/sdk/cmdline-tools/latest/bin
 
           # 创建整个目录结构
