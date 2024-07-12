@@ -17,7 +17,8 @@ jobs:
       run: |
         echo "ANDROID_SDK_ROOT=${{ github.workspace }}/android-sdk" >>$GITHUB_ENV
         echo "ANDROID_HOME=${{ github.workspace }}/android-sdk" >>$GITHUB_ENV
-        echo "JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64" >> $GITHUB_ENV
+        # 设置正确的 JAVA_HOME 路径
+        echo "JAVA_HOME=/usr/lib/jvm/temurin-11-jdk-amd64" >> $GITHUB_ENV
 
     # 安装 Android SDK Platform-Tools 3.5
     - name: Set up Android SDK Platform-Tools 3.5
