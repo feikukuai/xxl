@@ -14,12 +14,13 @@ jobs:
       - name: 布置环境的工具
         run: |
           which sdkmanager
-          sudo apt-get install aidl
+          apt-get update
+          apt-get install -y aidl
           mkdir -p ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/
           cp /usr/bin/aidl ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/
           cp /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/
-          chmod 777 ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/aidl
-          chmod 777 ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/sdkmanager
+          chmod 755 ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/aidl
+          chmod 755 ~/.buildozer/android/platform/android-sdk/build-tools/35.0.0/sdkmanager
           pip3 install cython
           pip3 install kivy
           pip3 install buildozer
