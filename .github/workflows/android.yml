@@ -33,11 +33,8 @@ jobs:
       run: ./gradlew build
       # 运行shell命令来执行Gradle构建脚本，该脚本位于项目根目录下的gradlew文件，并执行构建任务。
     
-    - name: Upload build artifacts
+    - name: Upload APK
       uses: actions/upload-artifact@v3
       with:
-        name: my-app-artifacts
-        path: build/libs
-      # 使用actions/upload-artifact@v3操作来上传构建生成的工件。
-      # 'name'指定了工件在GitHub Actions Artifacts页面上的显示名称。
-      # 'path'指定了要上传的工件所在的路径，这里假设构建生成的文件位于'build/libs'目录下。
+        name: app-release
+        path: app/build/outputs/apk/release/app-release.apk
