@@ -33,7 +33,7 @@ jobs:
       run: ./gradlew build
       # 运行shell命令来执行Gradle构建脚本，该脚本位于项目根目录下的gradlew文件，并执行构建任务。
     - name: Find the built APK file
-      id: find_apk
+      
       run: |
     # 假设 APK 文件位于 app/build/outputs/apk/debug/ 目录下
     # 你可以根据实际情况调整路径和文件名
