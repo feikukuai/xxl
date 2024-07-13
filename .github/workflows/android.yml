@@ -52,12 +52,11 @@ jobs:
       # `find app/build/ -name "*.apk"` 查找构建目录下所有的APK文件。
       # `echo "Found APK path: $apk_path"` 打印出找到的APK文件路径。
       # `echo "apk_path=$apk_path" >>$GITHUB_ENV` 将APK文件路径保存到环境变量中，以便后续步骤使用。
-
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
+   - name: Upload build artifacts
+     uses: actions/upload-artifact@v4
       with:
-        name: my-app-artifacts
-        path: app/build/outputs/apk/release/app-release-unsigned.apk
-      # 使用 `actions/upload-artifact@v4` 操作来上传构建生成的apk文件作为工作流程的输出。
-      # `name: my-app-artifacts` 为上传的artifact设置一个名称。
-      # `path: ${{ env.apk_path }}` 使用之前保存到环境变量中的APK文件路径。
+      name: my-app-artifacts
+      path: app/build/outputs/apk/release/app-release-unsigned.apk
+  # 上传构建生成的apk文件作为工作流程的输出
+  # 设置上传的artifact名称为'my-app-artifacts'
+  # 使用环境变量中的APK文件路径，这里注释中的path变量未在代码中实际使用
