@@ -26,13 +26,16 @@ jobs:
         java-version: '18'
         distribution: 'adopt'
         cache: gradle
+     
+     
       # 使用actions/setup-java@v3操作来设置Java开发环境，指定Java版本为18，使用Adoptium作为JDK的发行版，并启用Gradle缓存。
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
       # 运行shell命令来执行Gradle构建脚本，该脚本位于项目根目录下的gradlew文件，并执行构建任务。
-    - name: Find the built APK file
-      run: |
-       apk_path=$(find / -name "*.apk")
-     
+    - name: Upload APK
+      uses: actions/upload-artifact@v4
+       with:
+          name: app-dev-debug
+          path: app/build/outputs/apk/dev/debug/app-dev-debug.apk
