@@ -57,7 +57,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: my-app-artifacts
-        path: app/build/outputs/apk/release/app-release-unsigned.apk
+        path: app/build/outputs/apk/debug/app-debug.apk
       # 使用 `actions/upload-artifact@v4` 操作来上传构建生成的apk文件作为工作流程的输出。
       # `name: my-app-artifacts` 为上传的artifact设置一个名称。
       # `path: ${{ env.apk_path }}` 使用之前保存到环境变量中的APK文件路径。
