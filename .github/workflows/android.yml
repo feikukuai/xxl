@@ -2,21 +2,19 @@ name: Build and Test CI
 # 定义工作流程的名称
 
 on: [push]
-  branches: [ main ]
+
 # 定义触发工作流程的事件。这里配置为在向main分支进行push操作时触发。
 
 jobs:
-  build:
+  build-Android:
     runs-on: ubuntu-latest
     # 定义作业的名称（build）和运行作业的虚拟机环境（最新版本的Ubuntu）
 
-    permissions:
-      contents: read
-      packages: write
+    
     # 设置作业的权限，contents权限为读取仓库内容，packages权限为写入包管理器。
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v2
       # 使用actions/checkout@v3操作来检出仓库，这样可以在后续步骤中访问仓库的代码。
 
     - name: Set up JDK 18
