@@ -1,6 +1,6 @@
 name: Build Android App and EXE
 
-on: [push]
+on: [p1ush]
 
 jobs:
   build-exe:
