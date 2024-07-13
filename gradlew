@@ -18,14 +18,14 @@
 
 ##############################################################################
 ##
-##  Gradle start up script for UN*X
+##  Gradle启动脚本，适用于类Unix系统
 ##
 ##############################################################################
 
-# Attempt to set APP_HOME
-# Resolve links: $0 may be a link
+# 尝试设置APP_HOME
+# 解析链接：$0 可能是一个链接
 PRG="$0"
-# Need this for relative symlinks.
+# 对于相对符号链接，需要这个
 while [ -h "$PRG" ] ; do
     ls=`ls -ld "$PRG"`
     link=`expr "$ls" : '.*-> \(.*\)$'`
@@ -43,16 +43,18 @@ cd "$SAVED" >/dev/null
 APP_NAME="Gradle"
 APP_BASE_NAME=`basename "$0"`
 
-# Add default JVM options here. You can also use JAVA_OPTS and GRADLE_OPTS to pass JVM options to this script.
+# 在这里添加默认的JVM选项。你也可以使用JAVA_OPTS和GRADLE_OPTS来传递JVM选项给这个脚本。
 DEFAULT_JVM_OPTS='"-Xmx64m" "-Xms64m"'
 
-# Use the maximum available, or set MAX_FD != -1 to use that value.
+# 使用可用的最大值，或者设置MAX_FD != -1来使用该值。
 MAX_FD="maximum"
 
+# 定义警告函数
 warn () {
     echo "$*"
 }
 
+# 定义退出函数
 die () {
     echo
     echo "$*"
@@ -60,7 +62,7 @@ die () {
     exit 1
 }
 
-# OS specific support (must be 'true' or 'false').
+# 操作系统特定支持（必须为'true'或'false'）
 cygwin=false
 msys=false
 darwin=false
@@ -80,32 +82,30 @@ case "`uname`" in
     ;;
 esac
 
+# 设置类路径
 CLASSPATH=$APP_HOME/gradle/wrapper/gradle-wrapper.jar
 
-
-# Determine the Java command to use to start the JVM.
+# 确定用于启动JVM的Java命令
 if [ -n "$JAVA_HOME" ] ; then
     if [ -x "$JAVA_HOME/jre/sh/java" ] ; then
-        # IBM's JDK on AIX uses strange locations for the executables
+        # IBM的JDK在AIX上使用奇怪的路径存放可执行文件
         JAVACMD="$JAVA_HOME/jre/sh/java"
     else
         JAVACMD="$JAVA_HOME/bin/java"
     fi
     if [ ! -x "$JAVACMD" ] ; then
-        die "ERROR: JAVA_HOME is set to an invalid directory: $JAVA_HOME
+        die "ERROR: JAVA_HOME设置到了一个无效的目录: $JAVA_HOME
 
-Please set the JAVA_HOME variable in your environment to match the
-location of your Java installation."
+请将您的环境中的JAVA_HOME变量设置为您Java安装的位置。"
     fi
 else
     JAVACMD="java"
-    which java >/dev/null 2>&1 || die "ERROR: JAVA_HOME is not set and no 'java' command could be found in your PATH.
+    which java >/dev/null 2>&1 || die "ERROR: JAVA_HOME没有设置，并且在您的PATH中找不到'java'命令。
 
-Please set the JAVA_HOME variable in your environment to match the
-location of your Java installation."
+请将您的环境中的JAVA_HOME变量设置为您Java安装的位置。"
 fi
 
-# Increase the maximum file descriptors if we can.
+# 如果可以，增加最大文件描述符数
 if [ "$cygwin" = "false" -a "$darwin" = "false" -a "$nonstop" = "false" ] ; then
     MAX_FD_LIMIT=`ulimit -H -n`
     if [ $? -eq 0 ] ; then
@@ -114,26 +114,26 @@ if [ "$cygwin" = "false" -a "$darwin" = "false" -a "$nonstop" = "false" ] ; then
         fi
         ulimit -n $MAX_FD
         if [ $? -ne 0 ] ; then
-            warn "Could not set maximum file descriptor limit: $MAX_FD"
+            warn "无法设置最大文件描述符限制: $MAX_FD"
         fi
     else
-        warn "Could not query maximum file descriptor limit: $MAX_FD_LIMIT"
+        warn "无法查询最大文件描述符限制: $MAX_FD_LIMIT"
     fi
 fi
 
-# For Darwin, add options to specify how the application appears in the dock
+# 对于Darwin系统，添加选项以指定应用程序在Dock中的显示方式
 if $darwin; then
     GRADLE_OPTS="$GRADLE_OPTS \"-Xdock:name=$APP_NAME\" \"-Xdock:icon=$APP_HOME/media/gradle.icns\""
 fi
 
-# For Cygwin or MSYS, switch paths to Windows format before running java
+# 对于Cygwin或MSYS，在运行java之前将路径切换到Windows格式
 if [ "$cygwin" = "true" -o "$msys" = "true" ] ; then
     APP_HOME=`cygpath --path --mixed "$APP_HOME"`
     CLASSPATH=`cygpath --path --mixed "$CLASSPATH"`
 
     JAVACMD=`cygpath --unix "$JAVACMD"`
 
-    # We build the pattern for arguments to be converted via cygpath
+    # 我们构建用于通过cygpath转换的参数的模式
     ROOTDIRSRAW=`find -L / -maxdepth 1 -mindepth 1 -type d 2>/dev/null`
     SEP=""
     for dir in $ROOTDIRSRAW ; do
@@ -141,17 +141,17 @@ if [ "$cygwin" = "true" -o "$msys" = "true" ] ; then
         SEP="|"
     done
     OURCYGPATTERN="(^($ROOTDIRS))"
-    # Add a user-defined pattern to the cygpath arguments
+    # 向cygpath参数中添加用户定义的模式
     if [ "$GRADLE_CYGPATTERN" != "" ] ; then
         OURCYGPATTERN="$OURCYGPATTERN|($GRADLE_CYGPATTERN)"
     fi
-    # Now convert the arguments - kludge to limit ourselves to /bin/sh
+    # 现在转换参数 - 限制我们自己使用/bin/sh的解决方法
     i=0
     for arg in "$@" ; do
         CHECK=`echo "$arg"|egrep -c "$OURCYGPATTERN" -`
-        CHECK2=`echo "$arg"|egrep -c "^-"`                                 ### Determine if an option
+        CHECK2=`echo "$arg"|egrep -c "^-"`                                 ### 确定是否是一个选项
 
-        if [ $CHECK -ne 0 ] && [ $CHECK2 -eq 0 ] ; then                    ### Added a condition
+        if [ $CHECK -ne 0 ] && [$CHECK2 -eq 0 ] ; then                    ### 添加了一个条件
             eval `echo args$i`=`cygpath --path --ignore --mixed "$arg"`
         else
             eval `echo args$i`="\"$arg\""
@@ -172,14 +172,15 @@ if [ "$cygwin" = "true" -o "$msys" = "true" ] ; then
     esac
 fi
 
-# Escape application args
+# 转义应用程序参数
 save () {
     for i do printf %s\\n "$i" | sed "s/'/'\\\\''/g;1s/^/'/;\$s/\$/' \\\\/" ; done
     echo " "
 }
 APP_ARGS=`save "$@"`
 
-# Collect all arguments for the java command, following the shell quoting and substitution rules
-eval set -- $DEFAULT_JVM_OPTS $JAVA_OPTS $GRADLE_OPTS "\"-Dorg.gradle.appname=$APP_BASE_NAME\"" -classpath "\"$CLASSPATH\"" org.gradle.wrapper.GradleWrapperMain "$APP_ARGS"
+# 收集所有java命令的参数，遵循shell的引号和替换规则
+eval set -- $DEFAULT_JVM_OPTS$JAVA_OPTS $GRADLE_OPTS "\"-Dorg.gradle.appname=$APP_BASE_NAME\"" -classpath "\"$CLASSPATH\"" org.gradle.wrapper.GradleWrapperMain "$APP_ARGS"
 
+# 执行java命令
 exec "$JAVACMD" "$@"

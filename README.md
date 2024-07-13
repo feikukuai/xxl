@@ -1,8 +1,8 @@
 ![Banner](https://user-images.githubusercontent.com/70282966/224508931-89716813-b737-4093-853c-c97bb8ef8c1a.svg)
 
 ## Paper
-Paper — Note management done right.   
-Manage all your important notes with ease
+Paper — 简单的安卓笔记本.   
+管理所有的笔记，帮助记录。
 <p>
   <img src="assets/preview - 1.png" width="200"/>
   <img src="assets/preview - 2.png" width="200"/>
