@@ -46,7 +46,7 @@ jobs:
 
     - name: 查找构建好的 APK 文件
       run: |
-        apk_path=$(find app/build/ -name "*.apk")
+        find app/build/ -name "*.apk" -exec echo {} \;
         
       # 运行shell命令来查找构建生成的APK文件路径。
       # `find app/build/ -name "*.apk"` 查找构建目录下所有的APK文件。
@@ -61,3 +61,4 @@ jobs:
       # 使用 `actions/upload-artifact@v4` 操作来上传构建生成的apk文件作为工作流程的输出。
       # `name: my-app-artifacts` 为上传的artifact设置一个名称。
       # `path: ${{ env.apk_path }}` 使用之前保存到环境变量中的APK文件路径。
+    
