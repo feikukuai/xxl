@@ -38,4 +38,3 @@ jobs:
         with:
           name: python-exe
           path: dist/*.exe
-&
