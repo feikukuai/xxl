@@ -128,4 +128,4 @@ for paragraph in doc1.paragraphs:
         paragraph.clear()
 
 # 保存更改为 'output.docx'
-doc1.save('output.docx'
+doc1.save('output.docx')
