@@ -1,6 +1,8 @@
 name: Build Android App and EXE
 
-on: [push]
+#on: [push]
+on:
+  workflow_dispatch:
 
 jobs:
   build-exe:
@@ -22,7 +24,7 @@ jobs:
       - name: Install docx
         run: pip install python-docx
       - name: Install ai
-        run: pip install sparkdesk-api==1.6.0
+        run: pip install --upgrade spark_ai_python
 
       # 构建可执行文件
       - name: Build EXE
@@ -36,3 +38,4 @@ jobs:
         with:
           name: python-exe
           path: dist/*.exe
+&

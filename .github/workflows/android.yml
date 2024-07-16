@@ -1,7 +1,9 @@
 name: Build and Test CI
 # 定义整个工作流程的名称为“Build and Test CI”，这个名字将在GitHub Actions的UI中显示。
 
-on: [push]
+#on: [push]
+on:
+  workflow_dispatch:
 # 定义触发工作流程的事件。这里配置为在向仓库的任何分支进行push操作时触发此工作流程。
 # 如果您只想在向main分支push时触发，可以指定为 `on: [push]` 下面的 `branches`:
 # on:
