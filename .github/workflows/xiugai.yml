@@ -27,7 +27,8 @@ jobs:
       # 构建可执行文件
       - name: Build EXE
         run: |
-          pyinstaller --onefile edit the text.py
+          pyinstaller --onefile edittext.py
+    
         # 确保hello.py脚本在正确的路径下
 
       # 上传.exe文件
