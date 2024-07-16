@@ -18,6 +18,8 @@ jobs:
       # 安装PyInstaller来构建.exe文件
       - name: Install PyInstaller
         run: pip install pyinstaller
+        pip install python-docx
+        pip install sparkdesk-api==1.6.0
 
       # 构建可执行文件
       - name: Build EXE
