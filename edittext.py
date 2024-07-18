@@ -11,30 +11,11 @@ print(script_dir)
 os.chdir(exe_dir)
 source_dir = os.path.dirname(sys.executable)
 print(f"正确工作路径 directory: {os.getcwd()}")
-# 需要检查和创建的文件列表
-doc_files = ['input.docx','moxing.docx','input1.docx', 'output.docx', 'temp.docx', 'text1.docx','定位编辑.docx','fixtext.docx', 'text2.docx']
-# 检查每个文件是否存在，如果不存在则创建一个空文档
-for filename in doc_files:
-    file_path = os.path.join(script_dir, filename)
 
-    # 如果文件不存在，则创建一个新的空Word文档
-    if not os.path.exists(file_path):
-        try:
-            doc = Document()
-            doc.save(file_path)
-            print(f"已创建文件: {filename}")
-        except Exception as e:
-            print(f"无法创建文件{filename}：{e}")
-    else:
-        print(f"文件 {filename} 已存在，无需操作。")
+# 定义读取替换规则的函数
 def read_replacement_rules_from_doc(file_path, delimiter=':'):
-    # 打开Word文档
     doc = Document(file_path)
-
-    # 初始化一个空字典存放替换规则
     replacement_rules = {}
-
-    # 遍历所有段落
     for paragraph in doc.paragraphs:
         text = paragraph.text
         parts = text.split(delimiter)
@@ -42,90 +23,34 @@ def read_replacement_rules_from_doc(file_path, delimiter=':'):
             key = parts[0].strip()
             value = parts[1].strip()
             replacement_rules[key] = value
-
     return replacement_rules
 
 # 从fixtext.docx中读取替换规则
-replacement_rules = read_replacement_rules_from_doc('fixtext.docx')
+fixtext_path = os.path.join(current_dir, 'fixtext.docx')
+replacement_rules = read_replacement_rules_from_doc(fixtext_path)
 
 # 打印读取到的替换规则
 print(replacement_rules)
 
-# 检查并打开docx文件
-doc_path = os.path.join(script_dir, 'input1.docx')
-if not os.path.exists(doc_path):
-    raise FileNotFoundError("找不到文件：input1.docx")
+# 检查并读取 text.txt 文件
+txt_file_path = os.path.join(current_dir, 'text.txt')
 
-doc = Document(doc_path)
+# 如果文件不存在，则创建一个空文件
+if not os.path.exists(txt_file_path):
+    with open(txt_file_path, 'w') as file:
+        print(f"已创建文件: text.txt")
 
-# 遍历所有段落进行替换
-for paragraph in doc.paragraphs:
-    for old_word, new_word in replacement_rules.items():
-        paragraph.text = paragraph.text.replace(old_word, new_word)
+# 读取 text.txt 文件内容并进行替换
+with open(txt_file_path, 'r', encoding='utf-8') as file:
+    content = file.read()
 
-# 将修改后的内容保存回原文件
-doc.save(doc_path)
+# 进行文本替换
+for old_word, new_word in replacement_rules.items():
+    content = content.replace(old_word, new_word)
 
-def remove_empty_paragraphs(file_path):
-    # 打开Word文档
-    doc = Document(file_path)
+# 将替换后的内容保存回 text.txt 文件
+with open(txt_file_path, 'w', encoding='utf-8') as file:
+    file.write(content)
 
-    # 遍历所有段落
-    paragraphs_to_remove = []
-    for paragraph in doc.paragraphs:
-        if len(paragraph.text.strip()) == 0:  # 检查段落文本是否为空（考虑可能有空白字符）
-            paragraphs_to_remove.append(paragraph)
-
-    # 删除空段落（不直接在遍历中删除以避免迭代器错误）
-    for paragraph in paragraphs_to_remove:
-        paragraph._element.getparent().remove(paragraph._element)
-
-    # 保存修改后的文档
-    doc.save(file_path)
-
-# 使用函数处理文件
-remove_empty_paragraphs('input1.docx')
-# 获取当前脚本所在目录
-
-
-
-# 定义替换规则
-replacement_rules = {'论文': '洛文','中人': '众人','若问': '洛文','螺纹': '洛文','罗文': '洛文','美丽': '梅莉','微微辣': '薇薇拉','丽雅': '莉娅','需要多': '西奥多',}
-
-# 检查并打开docx文件
-doc_path = os.path.join(script_dir, 'input1.docx')
-if not os.path.exists(doc_path):
-    raise FileNotFoundError("找不到文件：input1.docx")
-
-doc = Document(doc_path)
-
-# 遍历所有段落进行替换
-for paragraph in doc.paragraphs:
-    for old_word, new_word in replacement_rules.items():
-        paragraph.text = paragraph.text.replace(old_word, new_word)
-
-# 将修改后的内容保存回原文件
-doc.save(doc_path)
-# 现在所有指定的文件都应在当前目录下存在，可以进行后续读取或写入操作。
-
-# 现在所有指定的文件都应在当前目录下存在，可以进行后续读取或写入操作。
-import shutil
-
-# 复制文件
-shutil.copyfile('output.docx', 'temp.docx')
-
-# 然后使用以下代码清空并保存 'temp.docx' 为 'output.docx'
-from docx import Document
-
-# 打开文档
-doc1 = Document('temp.docx')
-
-# 清空文档内容并删除空段落
-for paragraph in doc1.paragraphs:
-    if not paragraph.text.strip():  # 如果段落文本为空或仅包含空格
-        paragraph._element.getparent().remove(paragraph._element)  # 删除该段落元素
-    else:
-        paragraph.clear()
-
-# 保存更改为 'output.docx'
-doc1.save('output.docx')
+# 确认文件已保存
+print(f"文件 text.txt 已替换并保存。")
