@@ -11,7 +11,7 @@ print(script_dir)
 os.chdir(exe_dir)
 source_dir = os.path.dirname(sys.executable)
 print(f"正确工作路径 directory: {os.getcwd()}")
-
+current_dir = script_dir
 # 定义读取替换规则的函数
 def read_replacement_rules_from_doc(file_path, delimiter=':'):
     doc = Document(file_path)
