@@ -33,7 +33,7 @@ replacement_rules = read_replacement_rules_from_doc(fixtext_path)
 print(replacement_rules)
 
 # 检查并读取 text.txt 文件
-txt_file_path = os.path.join(current_dir, 'text.txt')
+txt_file_path = os.path.join(source_dir, 'text.txt')
 
 # 如果文件不存在，则创建一个空文件
 if not os.path.exists(txt_file_path):
