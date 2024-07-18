@@ -1,14 +1,16 @@
+from docx import Document
+# 获取当前脚本所在目录的绝对路径
 import os
 import sys
-from docx import Document
 
-# 获取当前脚本所在目录的绝对路径
-current_dir = os.path.dirname(__file__)
-if current_dir == '':
-    current_dir = os.getcwd()
-
-# 打印当前工作路径
-print(f"当前工作路径 directory: {current_dir}")
+exe_dir = os.path.dirname(sys.executable)
+print(exe_dir)
+script_dir = os.path.dirname(sys.executable)
+print(script_dir)
+# 改变当前工作目录到exe文件所在的目录
+os.chdir(exe_dir)
+source_dir = os.path.dirname(sys.executable)
+print(f"正确工作路径 directory: {os.getcwd()}")
 
 # 定义读取替换规则的函数
 def read_replacement_rules_from_doc(file_path, delimiter=':'):
