@@ -126,6 +126,18 @@ for paragraph in doc1.paragraphs:
         paragraph._element.getparent().remove(paragraph._element)  # 删除该段落元素
     else:
         paragraph.clear()
+        
 
 # 保存更改为 'output.docx'
-doc1.save('output.docx'
+doc1.save('output.docx')
+def remove_empty_paragraphs(doc_path):
+    doc = Document(doc_path)
+    paragraphs = doc.paragraphs
+    for para in paragraphs:
+        if not para.text.strip():
+            p = para._element
+            p.getparent().remove(p)
+    doc.save(doc_path)
+
+# 调用函数，替换成你的文档路径
+remove_empty_paragraphs('output.docx')

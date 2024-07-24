@@ -1,3 +1,4 @@
+#推送到远程仓库
 import subprocess
 
 def run_command(command):
