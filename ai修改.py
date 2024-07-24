@@ -307,3 +307,14 @@ print("位置在于:")
 
 
 print(source_dir)
+def remove_empty_paragraphs(doc_path):
+    doc = Document(doc_path)
+    paragraphs = doc.paragraphs
+    for para in paragraphs:
+        if not para.text.strip():
+            p = para._element
+            p.getparent().remove(p)
+    doc.save(doc_path)
+
+# 调用函数，替换成你的文档路径
+remove_empty_paragraphs('output.docx')
