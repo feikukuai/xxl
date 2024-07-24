@@ -1,6 +1,6 @@
-name: Build xiugaixiugai
+name: Build Android App and EXE
 
-on: [push]
+#on: [push]
 #on:
  # workflow_dispatch:
 
@@ -23,7 +23,12 @@ jobs:
         
       - name: Install docx
         run: pip install python-docx
-   
+      - name: Install data
+        run: pip install dashscope
+      
+      - name: Install ai
+        run: pip install --upgrade spark_ai_python
+
       # 构建可执行文件
       - name: Build EXE
         run: |
