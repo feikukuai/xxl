@@ -19,6 +19,9 @@ jobs:
 
       # 安装PyInstaller来构建.exe文件
       - name: Install be
+        run: pip install pyinstaller
+      
+      - name: Install be
         run: pip install beautifulsoup4
         
       - name: Install re
