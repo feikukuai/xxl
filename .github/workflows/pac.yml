@@ -31,7 +31,7 @@ jobs:
       - name: Build EXE
         run: |
           pyinstaller --onefile
-          爬虫.py
+          pachong.py
         # 确保hello.py脚本在正确的路径下
 
       # 上传.exe文件
