@@ -18,19 +18,11 @@ jobs:
           python-version: '3.x'
 
       # 安装PyInstaller来构建.exe文件
-      - name: Install PyInstaller
-        run: pip install pyinstaller
-        
-      - name: Install docx
-        run: pip install python-docx
-      - name: Install data
-        run: pip install dashscope
-            - name: Install be
+      - name: Install be
         run: pip install beautifulsoup4
+        
       - name: Install re
         run: pip install requests
-      - name: Install ai
-        run: pip install --upgrade spark_ai_python
 
       # 构建可执行文件
       - name: Build EXE
