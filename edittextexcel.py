@@ -11,6 +11,7 @@ script_dir = os.path.dirname(sys.executable)
 print(script_dir)
 # 改变当前工作目录到exe文件所在的目录
 os.chdir(exe_dir)
+current_dir = os.path.dirname(sys.executable)
 source_dir = os.path.dirname(sys.executable)
 print(f"正确工作路径 directory: {os.getcwd()}")
 
@@ -75,3 +76,4 @@ if __name__ == "__main__":
 
 
 
+    
