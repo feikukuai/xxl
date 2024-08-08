@@ -48,6 +48,8 @@ def read_docx(file_path):
     return "\n".join(full_text)
 import docx
 import pandas as pd
+from openpyxl import Workbook
+from openpyxl import load_workbook
 
 # 读取docx文件
 def read_docx(file_path):
@@ -70,17 +72,22 @@ def split_sentences(text):
             temp_sentence = ""
     return sentences
 
-# 存储到Excel
-def save_to_excel(sentences, excel_path):
-    df = pd.DataFrame(sentences, columns=['Sentences'])
-    df.to_excel(excel_path, index=False)
+# 存储到现有的Excel，从B8开始
+def save_to_excel(sentences, excel_path, sheet_name='Sheet1'):
+    wb = load_workbook(excel_path)
+    ws = wb[sheet_name]
+    row = 7  # Excel是从1开始的，所以第8行是7
+    for sentence in sentences:
+        ws.cell(row=row, column=2, value=sentence)  # B列是第2列
+        row += 1
+    wb.save(excel_path)
 
 # 主函数
 def main():
     text = read_docx(docx_file)
     sentences = split_sentences(text)
     save_to_excel(sentences, excel_file)
-    print("句子已保存到Excel文件中。")
+    print("句子已保存到现有Excel文件中，从B8开始。")
 
 if __name__ == "__main__":
     main()
