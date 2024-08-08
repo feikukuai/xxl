@@ -1,5 +1,7 @@
 
 import pandas as pd
+import openpyxl
+import docx
 from docx import Document
 # 获取当前脚本所在目录的绝对路径
 import os
