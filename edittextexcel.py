@@ -50,7 +50,6 @@ import docx
 import pandas as pd
 from openpyxl import Workbook
 from openpyxl import load_workbook
-
 # 读取docx文件
 def read_docx(file_path):
     doc = docx.Document(file_path)
@@ -72,11 +71,12 @@ def split_sentences(text):
             temp_sentence = ""
     return sentences
 
-# 存储到现有的Excel，从B8开始
-def save_to_excel(sentences, excel_path, sheet_name='Sheet1'):
+# 存储到现有的Excel，根据数字决定工作表
+def save_to_excel(sentences, excel_path, sheet_index):
     wb = load_workbook(excel_path)
-    ws = wb[sheet_name]
+    ws = wb.worksheets[sheet_index - 1]  # 工作表索引从0开始
     row = 8  # Excel是从1开始的，所以第8行是7
+
     for sentence in sentences:
         ws.cell(row=row, column=2, value=sentence)  # B列是第2列
         row += 1
@@ -84,10 +84,19 @@ def save_to_excel(sentences, excel_path, sheet_name='Sheet1'):
 
 # 主函数
 def main():
+   
     text = read_docx(docx_file)
+    
+    # 提取第一个数字作为工作表索引
+    first_line = text.split('\n', 1)[0]  # 获取第一行
+    sheet_index = int(first_line)  # 将第一行转换为整数作为工作表索引
+    
+    # 移除第一行
+    text = text[len(first_line):].strip()
+    
     sentences = split_sentences(text)
-    save_to_excel(sentences, excel_file)
-    print("句子已保存到现有Excel文件中，从B8开始。")
+    save_to_excel(sentences, excel_file, sheet_index)
+    print(f"句子已保存到Excel的第{sheet_index}个工作表中，从B8开始。")
 
 if __name__ == "__main__":
     main()
