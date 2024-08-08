@@ -46,11 +46,29 @@ def read_docx(file_path):
     for para in doc.paragraphs:
         full_text.append(para.text)
     return "\n".join(full_text)
+import docx
+import pandas as pd
+
+# 读取docx文件
+def read_docx(file_path):
+    doc = docx.Document(file_path)
+    full_text = []
+    for para in doc.paragraphs:
+        full_text.append(para.text)
+    return "\n".join(full_text)
 
 # 中文分句
 def split_sentences(text):
-    sentences = jieba.cut(text, cut_all=False)
-    return list(sentences)
+    # 使用中文句号、叹号或问号分割句子
+    sentence_delimiters = ['。', '！', '？']
+    sentences = []
+    temp_sentence = ""
+    for char in text:
+        temp_sentence += char
+        if char in sentence_delimiters:
+            sentences.append(temp_sentence.strip())
+            temp_sentence = ""
+    return sentences
 
 # 存储到Excel
 def save_to_excel(sentences, excel_path):
