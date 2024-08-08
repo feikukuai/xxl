@@ -29,6 +29,7 @@ def read_replacement_rules_from_doc(file_path, delimiter=':'):
     return replacement_rules
 
 # 从fixtext.docx中读取替换规则
+fixtext_path = os.path.join(current_dir, 'input1.docx')
 file_path = os.path.join(current_dir, 'input1.docx')
 replacement_rules = read_replacement_rules_from_doc(fixtext_path)
 
