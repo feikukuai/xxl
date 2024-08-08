@@ -76,7 +76,7 @@ def split_sentences(text):
 def save_to_excel(sentences, excel_path, sheet_name='Sheet1'):
     wb = load_workbook(excel_path)
     ws = wb[sheet_name]
-    row = 7  # Excel是从1开始的，所以第8行是7
+    row = 8  # Excel是从1开始的，所以第8行是7
     for sentence in sentences:
         ws.cell(row=row, column=2, value=sentence)  # B列是第2列
         row += 1
