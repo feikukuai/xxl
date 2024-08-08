@@ -2,6 +2,7 @@
 import pandas as pd
 import openpyxl
 import docx
+import jieba
 from docx import Document
 # 获取当前脚本所在目录的绝对路径
 import os
@@ -38,45 +39,30 @@ replacement_rules = read_replacement_rules_from_doc(fixtext_path)
 docx_file = os.path.join(current_dir, 'input1.docx')
 
 excel_file = os.path.join(current_dir, 'output.xlsx')
-
-# 读取docx文件并提取中文句子
+# 读取docx文件
 def read_docx(file_path):
     doc = docx.Document(file_path)
-    sentences = []
-    current_sentence = ""
-
+    full_text = []
     for para in doc.paragraphs:
-        if para.text.strip() != "":
-            for sentence in para.text.split('。'):
-                sentence = sentence.strip()
-                if sentence.endswith('！') or sentence.endswith('？'):
-                    sentences.append(current_sentence + sentence)
-                    current_sentence = ""
-                else:
-                    current_sentence += sentence + '。'
-    
-    # 添加最后一个句子（如果文件不以句号结尾）
-    if current_sentence.strip() != "":
-        sentences.append(current_sentence.strip())
+        full_text.append(para.text)
+    return "\n".join(full_text)
 
-    return sentences
+# 中文分句
+def split_sentences(text):
+    sentences = jieba.cut(text, cut_all=False)
+    return list(sentences)
 
-# 将句子列表存储为Excel
+# 存储到Excel
 def save_to_excel(sentences, excel_path):
-    df = pd.DataFrame(sentences, columns=["Sentences"])
+    df = pd.DataFrame(sentences, columns=['Sentences'])
     df.to_excel(excel_path, index=False)
 
 # 主函数
-def main():  # 输出的Excel文件名
-    sentences = read_docx(docx_file)
+def main():
+    text = read_docx(docx_file)
+    sentences = split_sentences(text)
     save_to_excel(sentences, excel_file)
-    print("完成，已保存到", excel_file)
+    print("句子已保存到Excel文件中。")
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
-    
