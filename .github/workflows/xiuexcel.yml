@@ -22,7 +22,7 @@ jobs:
         run: pip install pyinstaller
         
       - name: Install docx
-        run: pip install python-docx  pandas openpyxl
+        run: pip install python-docx  pandas openpyxl jieba
    
       # 构建可执行文件
       - name: Build EXE
