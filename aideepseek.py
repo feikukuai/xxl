@@ -257,19 +257,27 @@ def culi(a, api_key):
     
     # 将API的响应添加到消息列表中
     
-    messages = response.choices[0].message
-    
-    e_str = ""
+    a = response.choices[0].message
+    result_string = str(a)
+    content_start = result_string.find('content=')
+    if content_start != -1:
+        content_start += len('content=')
+        content_end = result_string.find(',refusal ', content_start)
+        if content_end == -1:
+            content_end = len(result_string)
+        content = result_string[content_start:content_end].strip('"')
 
-    # 将消息列表转换为字符串
-    e_str = [message['content'] for message in messages]
 
-    doc = Document()
-    doc.add_paragraph(e_str)
-    doc.save('output.docx')
+    sd_content = content.strip("'")
+    sd_content = sd_content.replace('\\n', '\n')
+    sd_content = sd_content + "\nA"
+    print(sd_content)
+    doc = Document('output.docx')
+    doc.add_paragraph(sd_content)
     print("已经存储")
-    
-    # 返回更新后的消息列表
+
+    # 保存修改后的文档
+    doc.save('output.docx')
     return e_str
 
 # 使用示例
