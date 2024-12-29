@@ -1,6 +1,6 @@
 name: Build Android App and EXE
 
-on: [push]
+#on: [push]
 #on:
  # workflow_dispatch:
 
@@ -26,6 +26,8 @@ jobs:
       - name: Install data
         run: pip install dashscope
       
+      - name: Install ai
+        run: pip install --upgrade spark_ai_python
       - name: Install ai
         run: pip3 install openai
 
