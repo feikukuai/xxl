@@ -251,7 +251,7 @@ def read_text_from_doc(file_path, batch_size=500, min_batch_size=500, setup_info
 
 input_file_path = 'input1.docx'
 
-   # 确保导入了Document类
+# 确保导入了Document类
 
 def culi(context):
     try:
