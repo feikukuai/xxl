@@ -238,12 +238,7 @@ def read_text_from_doc(file_path, batch_size=500, min_batch_size=500, setup_info
 
 input_file_path = 'input1.docx'
 
-# 确保ai处理的函数独立
-    #  text_batches[i] = text_batches[i] + "" + text2
-    return text_batches
 
-
-input_file_path = 'input1.docx'
 
 # 确保ai处理的函数独立
 from openai import OpenAI
@@ -280,6 +275,7 @@ def culi(a, api_key):
 
 # 使用示例
 api_key = "7b07c77962f445e88eb184369d0e49f2"  # 应该从安全的地方获取
+
 
 
 if __name__ == '__main__':
