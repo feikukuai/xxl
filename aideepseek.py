@@ -262,8 +262,8 @@ def culi(a, api_key):
     e_str = ""
 
     # 将消息列表转换为字符串
-    e_str = messages[0]["content"]
-         # 创建并写入 Word 文档
+    e_str = [message['content'] for message in messages]
+
     doc = Document()
     doc.add_paragraph(e_str)
     doc.save('output.docx')
