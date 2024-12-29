@@ -1,6 +1,6 @@
 name: Build Android App and EXE
 
-#on: [push]
+on: [push]
 #on:
  # workflow_dispatch:
 
@@ -25,7 +25,7 @@ jobs:
         run: pip install python-docx
       - name: Install data
         run: pip install dashscope
-      
+        
       - name: Install ai
         run: pip3 install openai
 
