@@ -274,7 +274,7 @@ def culi(a, api_key):
     return a
 
 # 使用示例
-api_key = "<sk-7b07c77962f445e88eb184369d0e49f2>"  # 应该从安全的地方获取
+api_key = "sk-7b07c77962f445e88eb184369d0e49f2"  # 应该从安全的地方获取
 
 
 
