@@ -2,19 +2,6 @@ from docx import Document
 # 获取当前脚本所在目录的绝对路径
 import os
 from openai import OpenAI
-
-import sys
-from sparkai.llm.llm import ChatSparkLLM, ChunkPrintHandler
-from sparkai.core.messages import ChatMessage
-# Please install OpenAI SDK first: `pip3 install openai`
-
-
-client = OpenAI(api_key="7b07c77962f445e88eb184369d0e49f2", base_url="https://api.deepseek.com")
-SPARKAI_URL = 'wss://spark-api.xf-yun.com/v3.5/chat'
-SPARKAI_APP_ID = '5c0003b4'
-SPARKAI_API_SECRET = '9b633f2a326ab1b0bff7f891c5ff4f1f'
-SPARKAI_API_KEY = '808152dc0a6a0064dc50034ce6b94252'
-SPARKAI_DOMAIN = 'generalv3.5'
 # 获取Python解释器（或exe）所在目录
 exe_dir = os.path.dirname(sys.executable)
 print(exe_dir)
@@ -251,7 +238,7 @@ def read_text_from_doc(file_path, batch_size=500, min_batch_size=500, setup_info
 
 input_file_path = 'input1.docx'
 
-# 确保导入了Document类
+# 确保ai处理的函数独立
 
 def culi(context):
     try:
@@ -278,46 +265,6 @@ def culi(context):
         doc.save('output.docx')
     except Exception as e:
         print(f"发生错误：{e}")
-
-def culi1(context):
-    spark = ChatSparkLLM(
-        spark_api_url=SPARKAI_URL,
-        spark_app_id=SPARKAI_APP_ID,
-        spark_api_key=SPARKAI_API_KEY,
-        spark_api_secret=SPARKAI_API_SECRET,
-        spark_llm_domain=SPARKAI_DOMAIN,
-        streaming=False,
-    )
-    print("运行中")
-
-    messages = [ChatMessage(
-        role="user",
-        content=context
-    )]
-    handler = ChunkPrintHandler()
-    a = spark.generate([messages], callbacks=[handler])
-
-    result_string = str(a)
-    content_start = result_string.find('content=')
-    if content_start != -1:
-        content_start += len('content=')
-        content_end = result_string.find('))]] ', content_start)
-        if content_end == -1:
-            content_end = len(result_string)
-        content = result_string[content_start:content_end].strip('"')
-
-
-    sd_content = content.strip("'")
-    sd_content = sd_content.replace('\\n', '\n')
-    sd_content = sd_content + "\nA"
-    print(sd_content)
-    doc = Document('output.docx')
-    doc.add_paragraph(sd_content)
-    print("已经存储")
-
-    # 保存修改后的文档
-    doc.save('output.docx')
-
 if __name__ == '__main__':
     text2 = ""
     text_batches = read_text_from_doc(input_file_path, setup_info=text2)
