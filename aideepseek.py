@@ -269,7 +269,6 @@ def culi(a, api_key):
     e_str = str(e)
     print(e_str)
 
-
     # 创建并写入 Word 文档
     doc = Document()
     doc.add_paragraph(e_str)
@@ -281,6 +280,7 @@ def culi(a, api_key):
 
 # 使用示例
 api_key = "7b07c77962f445e88eb184369d0e49f2"  # 应该从安全的地方获取
+
 
 if __name__ == '__main__':
     text2 = ""
