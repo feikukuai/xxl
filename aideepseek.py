@@ -262,7 +262,7 @@ def culi(a, api_key):
     e_str = ""
 
     # 将消息列表转换为字符串
-    e_str = messages[0]["content"]
+    e_str = e["content"]
 
 
     print(e)
