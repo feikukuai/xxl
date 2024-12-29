@@ -1,7 +1,7 @@
 from docx import Document
 # 获取当前脚本所在目录的绝对路径
 import os
-from openai import OpenAI
+
 # 获取Python解释器（或exe）所在目录
 exe_dir = os.path.dirname(sys.executable)
 print(exe_dir)
@@ -239,44 +239,55 @@ def read_text_from_doc(file_path, batch_size=500, min_batch_size=500, setup_info
 input_file_path = 'input1.docx'
 
 # 确保ai处理的函数独立
+    #  text_batches[i] = text_batches[i] + "" + text2
+    return text_batches
+
+
+input_file_path = 'input1.docx'
+
+# 确保ai处理的函数独立
+from openai import OpenAI
+
 from docx import Document
 
-# 假设 client 已经在其他地方被正确初始化
-# client = ...
+def culi(a, api_key):
+    # 创建 OpenAI 客户端实例
+    client = OpenAI(api_key=api_key, base_url="https://api.deepseek.com")
+    
+    # 使用传入的消息列表a进行聊天
+    response = client.chat.completions.create(
+        model="deepseek-chat",
+        messages=a
+    )
+    
+    # 将API的响应添加到消息列表中
+    e = response.choices[0].message
+    
+    a.append(e)
+    
+    # 将消息列表转换为字符串
+    e_str = str(e)
+    print(e_str)
 
-def culi(text):
-    try:
-        # 使用客户端向聊天模型发送消息并获取响应
-        response = client.chat.completions.create(
-            model="deepseek-chat",
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant"},
-                {"role": "user", "content": text},
-            ],
-            stream=False
-        )
-        # 提取生成的内容
-        a = response.choices[0].message.content
 
-        # 将响应内容保存到 Word 文件
-        doc = Document()
-        doc.add_paragraph(a)
-        doc.save('output.docx')
-        print("已经存储到 output.docx")
+    # 创建并写入 Word 文档
+    doc = Document()
+    doc.add_paragraph(e_str)
+    doc.save('output.docx')
+    print("已经存储")
+    
+    # 返回更新后的消息列表
+    return a
 
-        # 返回生成的响应内容
-        return a
-    except Exception as e:
-        # 打印异常信息
-        print(f"发生错误：{e}")
-        # 可以选择重新抛出异常或者返回错误信息
-        # raise
-        return None
+# 使用示例
+api_key = "7b07c77962f445e88eb184369d0e49f2"  # 应该从安全的地方获取
+
 if __name__ == '__main__':
     text2 = ""
     text_batches = read_text_from_doc(input_file_path, setup_info=text2)
     for i, text_batch in enumerate(text_batches):
-        culi(text_batch)
+        messages = [{"role": "user", "content": text_batch}]
+        culi(messages, api_key)
 from docx import Document
 
     
