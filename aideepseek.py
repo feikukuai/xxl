@@ -260,9 +260,8 @@ def culi(a, api_key):
     messages.append(response.choices[0].message)
     
     
-    
     # 将消息列表转换为字符串
-    e_str = messages[1]["content"]
+    e_str = messages[0]["content"]
 
 
     print(e_str)
