@@ -1,6 +1,6 @@
 name: Build Android App and EXE
 
-#on: [push]
+on: [push]
 #on:
  # workflow_dispatch:
 
