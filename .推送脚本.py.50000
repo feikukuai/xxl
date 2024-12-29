@@ -15,7 +15,7 @@ def run_command(command):
 run_command('git add .')
 
 # 提交更改
-run_command('git commit -m "deepseek"')
+run_command('git commit -m "deepseekExperiment"')
 
 # 添加远程仓库
 run_command('git remote add origin git@github.com:feihukuai/word.git')
