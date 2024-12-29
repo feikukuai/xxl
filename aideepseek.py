@@ -257,12 +257,12 @@ def culi(a, api_key):
     
     # 将API的响应添加到消息列表中
     
-    messages.append(response.choices[0].message)
+    e = response.choices[0].message
     
     e_str = ""
 
     # 将消息列表转换为字符串
-    e_str = messages[1]["content"]
+    e_str = e[0]["content"]
 
 
     print(e_str)
