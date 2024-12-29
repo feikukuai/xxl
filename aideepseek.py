@@ -257,21 +257,17 @@ def culi(a, api_key):
     
     # 将API的响应添加到消息列表中
     
-    e = response.choices[0].message
+    messages = response.choices[0].message
     
     e_str = ""
 
     # 将消息列表转换为字符串
-    e_str = e["content"]
-
-
-    print(e)
-
-    # 创建并写入 Word 文档
+    e_str = messages[0]["content"]
+         # 创建并写入 Word 文档
     doc = Document()
     doc.add_paragraph(e_str)
     doc.save('output.docx')
-    print("已经存储&")
+    print("已经存储")
     
     # 返回更新后的消息列表
     return e_str
