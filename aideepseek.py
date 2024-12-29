@@ -257,22 +257,15 @@ def culi(a, api_key):
     
     # 将API的响应添加到消息列表中
     
-    messages = response.choices[0].message
-    
-    conversations = messages
-    a = ""
-    for conversation in conversations:
-    if conversation['role'] == 'assistant':
-        a = conversation['content']
+    messages.append(response.choices[0].message)
+    print(messages)
+    e_str = ""
 
-
-# 遍历列表，找到角色为'assistant'的字典，并将其'content'键对应的值赋给变量a
-    
-
-
-    # 创建并写入 Word 文档
+    # 将消息列表转换为字符串
+    e_str = messages[0]["content"]
+         # 创建并写入 Word 文档
     doc = Document()
-    doc.add_paragraph(a)
+    doc.add_paragraph(e_str)
     doc.save('output.docx')
     print("已经存储")
     
