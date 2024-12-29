@@ -278,7 +278,6 @@ def culi(a, api_key):
 
     # 保存修改后的文档
     doc.save('output.docx')
-    return e_str
 
 # 使用示例
 api_key = "sk-7b07c77962f445e88eb184369d0e49f2"  # 应该从安全的地方获取
@@ -292,7 +291,6 @@ if __name__ == '__main__':
         messages = [{"role": "user", "content": text_batch}]
         culi(messages, api_key)
 from docx import Document
-
     
 # 使用您的实际文件路径替换 'your_file_path.docx'
 
