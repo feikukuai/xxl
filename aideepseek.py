@@ -239,32 +239,40 @@ def read_text_from_doc(file_path, batch_size=500, min_batch_size=500, setup_info
 input_file_path = 'input1.docx'
 
 # 确保ai处理的函数独立
+from openai import OpenAI
+from docx import Document
 
-def culi(context):
-    try:
-        response = client.chat.completions.create(
-            model="deepseek-chat",
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant"},
-                {"role": "user", "content": context},
-            ],
-            stream=False
-        )
+# 初始化客户端
+def culi(content):
+    """
+    调用 DeepSeek API 并返回生成的响应内容，同时保存到 Word 文档中。
+    
+    参数:
+        content (str): 用户输入内容。
+    
+    返回:
+        str: 生成的响应内容。
+    """
+    response = client.chat.completions.create(
+        model="deepseek-chat",
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant"},
+            {"role": "user", "content": content},
+        ],
+        stream=False
+    )
+    # 提取生成的内容
+    a = response.choices[0].message.content
 
-        a = response.choices[0].message.content
-        print(a)
+    # 将响应内容保存到 Word 文件
+    doc = Document()
+    doc.add_paragraph(a)
+    doc.save('output.docx')
+    print("已经存储到 output.docx")
 
-        result_string = str(a)
-        sd_content = result_string  # 考虑更改为更具描述性的变量名
+    # 返回生成的响应内容
+    return a
 
-        doc = Document('output.docx')
-        doc.add_paragraph(sd_content)
-        print("已经存储")
-
-        # 保存修改后的文档
-        doc.save('output.docx')
-    except Exception as e:
-        print(f"发生错误：{e}")
 if __name__ == '__main__':
     text2 = ""
     text_batches = read_text_from_doc(input_file_path, setup_info=text2)
