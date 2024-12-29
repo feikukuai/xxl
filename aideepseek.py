@@ -256,12 +256,13 @@ def culi(a, api_key):
     )
     
     # 将API的响应添加到消息列表中
-    e = response.choices[0].message
     
-    a.append(e)
+    messages.append(response.choices[0].message)
+    
+    
     
     # 将消息列表转换为字符串
-    e_str = e[-1]["content"]
+    e_str = messages[-1]["content"]
 
     print(e_str)
 
@@ -272,7 +273,7 @@ def culi(a, api_key):
     print("已经存储")
     
     # 返回更新后的消息列表
-    return a
+    return e_str
 
 # 使用示例
 api_key = "sk-7b07c77962f445e88eb184369d0e49f2"  # 应该从安全的地方获取
