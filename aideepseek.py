@@ -262,7 +262,7 @@ def culi(a, api_key):
     content_start = result_string.find('content=')
     if content_start != -1:
         content_start += len('content=')
-        content_end = result_string.find(',refusal ', content_start)
+        content_end = result_string.find(', refusal=None', content_start)
         if content_end == -1:
             content_end = len(result_string)
         content = result_string[content_start:content_end].strip('"')
