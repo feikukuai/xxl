@@ -275,8 +275,8 @@ def culi(a, api_key,fieldQ):
     doc = Document('output.docx')
     position = sd_content.find(fieldQ)
     if position != -1:
-    # 删除fieldQ及其后面的字符
-    sd_content = sd_content[:position + len(fieldQ)]
+       sd_content = sd_content[:position + len(fieldQ)]
+    doc.add_paragraph(sd_content)
     doc.add_paragraph(sd_content)
     print("已经存储")
 
