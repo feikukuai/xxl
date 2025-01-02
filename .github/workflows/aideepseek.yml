@@ -26,6 +26,9 @@ jobs:
       - name: Install data
         run: pip install dashscope
         
+      - name: Install fuzz
+        run: pip install fuzzywuzzy
+
       - name: Install ai
         run: pip3 install openai
 
