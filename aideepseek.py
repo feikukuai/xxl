@@ -274,7 +274,7 @@ def culi(a, api_key,fieldQ):
     print(sd_content)
     doc = Document('output.docx')
     from fuzzywuzzy import process
-    words = sd_content.split()
+    words = sd_content
     matched_word = process.extractOne(fieldQ, words)
     position = sd_content.find(matched_word)
     if position != -1:
