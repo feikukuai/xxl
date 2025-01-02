@@ -245,7 +245,7 @@ from openai import OpenAI
 
 from docx import Document
 
-def culi(a, api_key,fieldQ):
+def culi(a, api_key):
     # 创建 OpenAI 客户端实例
     client = OpenAI(api_key=api_key, base_url="https://api.deepseek.com")
     
@@ -273,10 +273,6 @@ def culi(a, api_key,fieldQ):
     sd_content = sd_content + "\nA"
     print(sd_content)
     doc = Document('output.docx')
-    position = sd_content.find(fieldQ)
-    if position != -1:
-    # 删除fieldQ及其后面的字符
-    sd_content = sd_content[:position + len(fieldQ)]
     doc.add_paragraph(sd_content)
     print("已经存储")
 
@@ -292,9 +288,8 @@ if __name__ == '__main__':
     text2 = ""
     text_batches = read_text_from_doc(input_file_path, setup_info=text2)
     for i, text_batch in enumerate(text_batches):
-        fieldQ = text_batch[-3:]
         messages = [{"role": "user", "content": text_batch}]
-        culi(messages, api_key,fieldQ)
+        culi(messages, api_key)
 from docx import Document
     
 # 使用您的实际文件路径替换 'your_file_path.docx'
