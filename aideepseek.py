@@ -291,7 +291,7 @@ if __name__ == '__main__':
     text2 = ""
     text_batches = read_text_from_doc(input_file_path, setup_info=text2)
     for i, text_batch in enumerate(text_batches):
-        fieldQ = text_batch[-3:]
+        fieldQ = text_batch[-4:]
         messages = [{"role": "user", "content": text_batch}]
         culi(messages, api_key,fieldQ)
 from docx import Document
