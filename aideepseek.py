@@ -275,11 +275,8 @@ def culi(a, api_key,fieldQ):
     doc = Document('output.docx')
     from fuzzywuzzy import process
     words = sd_content.split()
-    matched_word, score = process.extractOne(fieldQ, words)
-    if score > 70:  # 设置相似度阈值
-       position = sd_content.find(matched_word)
-    if score <= 70:
-       position = -1
+    matched_word = process.extractOne(fieldQ, words)
+    position = sd_content.find(matched_word)
     if position != -1:
        sd_content = sd_content[:position + len(fieldQ)]
     doc.add_paragraph(sd_content)
