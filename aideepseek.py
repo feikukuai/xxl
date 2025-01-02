@@ -277,7 +277,6 @@ def culi(a, api_key,fieldQ):
     if position != -1:
        sd_content = sd_content[:position + len(fieldQ)]
     doc.add_paragraph(sd_content)
-    doc.add_paragraph(sd_content)
     print("已经存储")
 
     # 保存修改后的文档
