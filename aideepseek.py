@@ -277,14 +277,13 @@ def culi(a, api_key,fieldQ):
     from fuzzywuzzy import process
     # 获取所有可能的匹配项，按分数排序
     import re
-    large_text = sd_content
-    target = fieldQ
+    
     sentences = re.split(r'([' + re.escape(chinese_punctuation) + '])', sd_content)
     # 将标点符号重新拼接到句子上
     sentences = [sentences[i] + sentences[i+1] for i in range(0, len(sentences)-1, 2)]
     pattern = re.compile(r".*[" + re.escape(chinese_punctuation) + "]$")
-    candidates = [s for s in sentences if pattern.search(s)]
-    matches = process.extract(fieldQ, sd_content)
+    candidates = [s for s in sentences if pattern.match(s)]
+    matches = process.extract(fieldQ, candidates, limit=20)
     
 # 遍历匹配项，找到 matched_word
     matched_word = None
@@ -297,12 +296,10 @@ def culi(a, api_key,fieldQ):
            
     if matched_word:
        position = sd_content.find(matched_word)
+       if position != -1:
+           sd_content = sd_content[:position + len(matched_word)]
     else:
-       position = -1
-    if position != -1:
-       sd_content = sd_content[:position + len(matched_word)]  # 使用 matched_word 的长度doc.add_paragraph(sd_content)
-    print("已经存储")
-    doc.add_paragraph(sd_content)
+        sd_content = sd_content
 
     # 保存修改后的文档
     doc.save('output.docx')
