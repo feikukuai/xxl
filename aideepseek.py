@@ -275,7 +275,7 @@ def culi(a, api_key,fieldQ):
     doc = Document('output.docx')
     from fuzzywuzzy import process
     matched_word, score = process.extractOne(fieldQ, sd_content)
-    position = sd_content.find(matched_word) if score > 70 else -1
+    position = sd_content.find(matched_word) if score > pipeisuzi else -1
     if position != -1:
        sd_content = sd_content[:position + 2 + len(matched_word)]  # 使用 matched_word 的长度doc.add_paragraph(sd_content)
     print("已经存储")
@@ -289,11 +289,58 @@ api_key = "sk-7b07c77962f445e88eb184369d0e49f2"  # 应该从安全的地方获�
 
 
 
+# 打开 .docx 文件
+doc = Document('suzi.docx')
+
+# 初始化一个空字符串来存储文档内容
+content = ''
+
+# 遍历文档中的每个段落，并将其内容添加到变量 content 中
+for para in doc.paragraphs:
+    content += para.text.strip()  # 使用 strip() 去除空白字符
+
+# 假设 content 是一个数字，将其转换为整数或浮点数
+try:
+    if '.' in content:  # 如果包含小数点，转换为浮点数
+        suzi = float(content)
+        
+    else:  # 否则转换为整数
+        suzi = int(content)
+        
+except ValueError:
+    print("文件内容不是一个有效的数字！")
+    suzi = None  # 如果转换失败，将 a 设置为 None
+
+
+# 打开 .docx 文件
+doc = Document('pipeisuzi.docx')
+
+# 初始化一个空字符串来存储文档内容
+content = ''
+
+# 遍历文档中的每个段落，并将其内容添加到变量 content 中
+for para in doc.paragraphs:
+    content += para.text.strip()  # 使用 strip() 去除空白字符
+
+# 假设 content 是一个数字，将其转换为整数或浮点数
+try:
+    if '.' in content:  # 如果包含小数点，转换为浮点数
+        pipeisuzi = float(content)
+        
+    else:  # 否则转换为整数
+        pipeisuzi = int(content)
+        
+except ValueError:
+    print("文件内容不是一个有效的数字！")
+    pipeisuzi = None  # 如果转换失败，将 a 设置为 None
+
+
+
 if __name__ == '__main__':
     text2 = ""
     text_batches = read_text_from_doc(input_file_path, setup_info=text2)
     for i, text_batch in enumerate(text_batches):
-        fieldQ = text_batch[-3:]
+        fieldQ = text_batch[-suzi:]
         messages = [{"role": "user", "content": text_batch}]
         culi(messages, api_key,fieldQ)
 from docx import Document
