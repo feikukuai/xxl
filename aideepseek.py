@@ -273,11 +273,26 @@ def culi(a, api_key,fieldQ):
     sd_content = sd_content + "\nA"
     print(sd_content)
     doc = Document('output.docx')
+    chinese_punctuation = "，。！？；：、（）《》【】“”‘’"
     from fuzzywuzzy import process
-    matched_word, score = process.extractOne(fieldQ, sd_content)
-    position = sd_content.find(matched_word) if score > pipeisuzi else -1
+    # 获取所有可能的匹配项，按分数排序
+    matches = process.extract(fieldQ, sd_content)
+
+# 遍历匹配项，找到 matched_word
+    matched_word = None
+    score = 0
+    for match, match_score in matches:
+        if match and match[-1] in chinese_punctuation and match_score > pipeisuzi:
+           matched_word = match
+           score = match_score
+           break
+           
+    if matched_word:
+       position = sd_content.find(matched_word)
+    else:
+       position = -1
     if position != -1:
-       sd_content = sd_content[:position + 2 + len(matched_word)]  # 使用 matched_word 的长度doc.add_paragraph(sd_content)
+       sd_content = sd_content[:position + len(matched_word)]  # 使用 matched_word 的长度doc.add_paragraph(sd_content)
     print("已经存储")
     doc.add_paragraph(sd_content)
 
