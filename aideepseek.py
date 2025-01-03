@@ -273,11 +273,19 @@ def culi(a, api_key,fieldQ):
     sd_content = sd_content + "\nA"
     print(sd_content)
     doc = Document('output.docx')
-    chinese_punctuation = "，。……！？…………；：、（）《》【】“”‘’"
+    chinese_punctuation = "，。……！？…………；：、（）〈〉《》{}【】“”‘’"
     from fuzzywuzzy import process
     # 获取所有可能的匹配项，按分数排序
+    import re
+    large_text = sd_content
+    target = fieldQ
+    sentences = re.split(r'([' + re.escape(chinese_punctuation) + '])', sd_content)
+    # 将标点符号重新拼接到句子上
+    sentences = [sentences[i] + sentences[i+1] for i in range(0, len(sentences)-1, 2)]
+    pattern = re.compile(r".*[" + re.escape(chinese_punctuation) + "]$")
+    candidates = [s for s in sentences if pattern.search(s)]
     matches = process.extract(fieldQ, sd_content)
-
+    
 # 遍历匹配项，找到 matched_word
     matched_word = None
     score = 0
