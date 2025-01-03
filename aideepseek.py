@@ -274,12 +274,10 @@ def culi(a, api_key,fieldQ):
     print(sd_content)
     doc = Document('output.docx')
     from fuzzywuzzy import process
-    words = sd_content
-    matched_word = process.extractOne(fieldQ, words)
-    position = sd_content.find(matched_word)
+    matched_word, score = process.extractOne(fieldQ, sd_content)
+    position = sd_content.find(matched_word) if score > 90 else -1
     if position != -1:
-       sd_content = sd_content[:position + len(fieldQ)]
-    doc.add_paragraph(sd_content)
+       sd_content = sd_content[:position + len(fieldQ)]  # 使用 matched_word 的长度doc.add_paragraph(sd_content)
     print("已经存储")
 
     # 保存修改后的文档
