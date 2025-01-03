@@ -275,7 +275,7 @@ def culi(a, api_key,fieldQ):
     doc = Document('output.docx')
     from fuzzywuzzy import process
     matched_word, score = process.extractOne(fieldQ, sd_content)
-    position = sd_content.find(matched_word) if score > 90 else -1
+    position = sd_content.find(matched_word) if score > 70 else -1
     if position != -1:
        sd_content = sd_content[:position + 2 + len(matched_word)]  # 使用 matched_word 的长度doc.add_paragraph(sd_content)
     print("已经存储")
@@ -293,7 +293,7 @@ if __name__ == '__main__':
     text2 = ""
     text_batches = read_text_from_doc(input_file_path, setup_info=text2)
     for i, text_batch in enumerate(text_batches):
-        fieldQ = text_batch[-4:]
+        fieldQ = text_batch[-3:]
         messages = [{"role": "user", "content": text_batch}]
         culi(messages, api_key,fieldQ)
 from docx import Document
