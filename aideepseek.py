@@ -300,6 +300,7 @@ def culi(a, api_key,fieldQ):
            sd_content = sd_content[:position + len(matched_word)]
     else:
         sd_content = sd_content
+    doc.add_paragraph(sd_content)
 
     # 保存修改后的文档
     doc.save('output.docx')
