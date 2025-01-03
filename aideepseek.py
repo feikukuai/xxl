@@ -273,7 +273,7 @@ def culi(a, api_key,fieldQ):
     sd_content = sd_content + "\nA"
     print(sd_content)
     doc = Document('output.docx')
-    chinese_punctuation = "，。！？；：、（）《》【】“”‘’"
+    chinese_punctuation = "，。……！？…………；：、（）《》【】“”‘’"
     from fuzzywuzzy import process
     # 获取所有可能的匹配项，按分数排序
     matches = process.extract(fieldQ, sd_content)
