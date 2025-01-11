@@ -16,5 +16,5 @@
        - uses: kolpav/purge-artifacts-action@v1
          with:
            token: secrets.GITHUBTOKEN
-           expire-in: 1days
+           expire-in: 0days
    
