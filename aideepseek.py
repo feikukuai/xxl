@@ -12,7 +12,7 @@ os.chdir(exe_dir)
 source_dir = os.path.dirname(sys.executable)
 print(f"正确工作路径 directory: {os.getcwd()}")
 # 需要检查和创建的文件列表
-doc_files = ['input.docx','moxing.docx','input1.docx', 'output.docx', 'temp.docx', 'text1.docx','定位编辑.docx','fixtext.docx', 'text2.docx']
+doc_files = ['input.docx','moxing.docx','input3.docx', 'output.docx', 'temp.docx', 'text1.docx','定位编辑.docx','fixtext.docx', 'text2.docx']
 # 检查每个文件是否存在，如果不存在则创建一个空文档
 for filename in doc_files:
     file_path = os.path.join(script_dir, filename)
@@ -52,9 +52,9 @@ replacement_rules = read_replacement_rules_from_doc('fixtext.docx')
 print(replacement_rules)
 
 # 检查并打开docx文件
-doc_path = os.path.join(script_dir, 'input1.docx')
+doc_path = os.path.join(script_dir, 'input3.docx')
 if not os.path.exists(doc_path):
-    raise FileNotFoundError("找不到文件：input1.docx")
+    raise FileNotFoundError("找不到文件：input3.docx")
 
 doc = Document(doc_path)
 
@@ -84,7 +84,7 @@ def remove_empty_paragraphs(file_path):
     doc.save(file_path)
 
 # 使用函数处理文件
-remove_empty_paragraphs('input1.docx')
+remove_empty_paragraphs('input3.docx')
 # 获取当前脚本所在目录
 
 
@@ -93,9 +93,9 @@ remove_empty_paragraphs('input1.docx')
 replacement_rules = {'论文': '洛文','中人': '众人','若问': '洛文','螺纹': '洛文','罗文': '洛文','美丽': '梅莉','微微辣': '薇薇拉','丽雅': '莉娅','需要多': '西奥多',}
 
 # 检查并打开docx文件
-doc_path = os.path.join(script_dir, 'input1.docx')
+doc_path = os.path.join(script_dir, 'input3.docx')
 if not os.path.exists(doc_path):
-    raise FileNotFoundError("找不到文件：input1.docx")
+    raise FileNotFoundError("找不到文件：input3.docx")
 
 doc = Document(doc_path)
 
@@ -236,7 +236,7 @@ def read_text_from_doc(file_path, batch_size=500, min_batch_size=500, setup_info
     return text_batches
 
 
-input_file_path = 'input1.docx'
+input_file_path = 'input3.docx'
 
 
 
