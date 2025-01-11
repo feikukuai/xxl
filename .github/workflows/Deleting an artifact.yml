@@ -1,20 +1,17 @@
+name: Delete All Artifacts
 
-   name: 'Delete old artifacts'
-   on:
-     push:
-       branches:
-         - master
-         - develop
-     pull_request:
-       branches:
-         - master
-         - develop
-   jobs:
-     delete-artifacts:
-       runs-on: ubuntu-latest
-       steps:
-       - uses: kolpav/purge-artifacts-action@v1
-         with:
-           token: secrets.GITHUBTOKEN
-           expire-in: 0days
-   
+on:
+  workflow_dispatch:
+
+jobs:
+  delete-artifacts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Delete all artifacts
+        run: |
+          gh api repos/${{ github.repository }}/actions/artifacts --paginate | jq -r '.artifacts[].id' | xargs -I{} gh api repos/${{ github.repository }}/actions/artifacts/{} -X DELETE
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
