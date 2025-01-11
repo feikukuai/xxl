@@ -6,6 +6,9 @@ on:
 jobs:
   delete-artifacts:
     runs-on: ubuntu-latest
+    permissions:
+      actions: write  # 允许删除工件
+      contents: read  # 允许读取仓库内容
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
