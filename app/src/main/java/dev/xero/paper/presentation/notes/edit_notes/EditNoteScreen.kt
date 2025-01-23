@@ -90,6 +90,7 @@ fun EditNoteScreen(
                     else
                         viewModel.addNote()
                     // 触发保存按钮点击回调
+                    Toast.makeText(context, "已经保存!", Toast.LENGTH_SHORT).show()
                     onSaveNoteButtonClicked()
                 },
                 backgroundColor = Primary, // 按钮背景颜色
