@@ -34,6 +34,12 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew assembleRelease
 
+      - name: Generate debug keystore
+        run: |
+          keytool -genkey -v -keystore debug.keystore -keyalg RSA -keysize 2048 -validity 10000 -alias androiddebugkey \
+            -storepass android -keypass android -dname "CN=Android Debug, O=Android, C=US"
+          echo "Debug keystore generated successfully!"
+
       - name: Find unsigned APK files
         id: find-unsigned-apk
         run: |
@@ -49,7 +55,7 @@ jobs:
       - name: Sign APK with debug keystore
         run: |
           apksigner sign \
-            --ks $ANDROID_HOME/debug.keystore \
+            --ks debug.keystore \
             --ks-pass pass:android \
             --key-pass pass:android \
             --out app-release-signed.apk \
