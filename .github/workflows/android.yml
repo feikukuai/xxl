@@ -34,14 +34,6 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew assembleRelease
 
-      - name: Generate Keystore
-        id: generate-keystore
-        run: |
-          keytool -genkey -v -keystore my-release-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias my-key-alias \
-            -storepass ${{ secrets.KEYSTORE_PASSWORD }} -keypass ${{ secrets.KEY_PASSWORD }} \
-            -dname "CN=Unknown, OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=Unknown"
-          echo "Keystore generated successfully!"
-
       - name: Find unsigned APK files
         id: find-unsigned-apk
         run: |
@@ -54,12 +46,12 @@ jobs:
           echo "ANDROID_HOME=$ANDROID_HOME" >> $GITHUB_ENV
           echo "$ANDROID_HOME/build-tools/$(ls $ANDROID_HOME/build-tools | sort -V | tail -1)" >> $GITHUB_PATH
 
-      - name: Sign APK
+      - name: Sign APK with debug keystore
         run: |
           apksigner sign \
-            --ks my-release-key.jks \
-            --ks-pass pass:${{ secrets.KEYSTORE_PASSWORD }} \
-            --key-pass pass:${{ secrets.KEY_PASSWORD }} \
+            --ks $ANDROID_HOME/debug.keystore \
+            --ks-pass pass:android \
+            --key-pass pass:android \
             --out app-release-signed.apk \
             ${{ env.apk_path }}
 
