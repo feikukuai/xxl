@@ -77,7 +77,10 @@ fun EditNoteScreen(
                     } else {
                         viewModel.addNote()
                     }
-                    Toast.makeText(context, "已经保存!", Toast.LENGTH_SHORT).show() // 使用正确的context
+                    
+                    // 调用
+                    val outtext = processText("你好") // 你看看这里附近有问题没，其他地方不用看
+                    Toast.makeText(context, outtext, Toast.LENGTH_SHORT).show() // 使用正确的context
                     onSaveNoteButtonClicked()
                 },
                 backgroundColor = Primary,
@@ -124,4 +127,8 @@ fun EditNoteScreen(
             )
         }
     }
+}
+// 输入一个字符串，返回处理后的字符串
+fun processText(input: String): String {
+    return "结果还行还行：$input"
 }
