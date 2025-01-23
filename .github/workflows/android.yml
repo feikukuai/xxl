@@ -29,17 +29,41 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew assembleRelease
 
-      - name: Find built APK files
-        id: find-apk
+      - name: Generate Keystore
+        id: generate-keystore
         run: |
-          apk_path=$(find app/build/outputs/apk/ -name "*.apk" | head -n 1)
-          echo "Found APK path: $apk_path"
+          keytool -genkey -v -keystore my-release-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias my-key-alias \
+            -storepass ${{ secrets.KEYSTORE_PASSWORD }} -keypass ${{ secrets.KEY_PASSWORD }} \
+            -dname "CN=Unknown, OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=Unknown"
+          echo "Keystore generated successfully!"
+
+      - name: Find unsigned APK files
+        id: find-unsigned-apk
+        run: |
+          apk_path=$(find app/build/outputs/apk/ -name "*-unsigned.apk" | head -n 1)
+          echo "Found unsigned APK path: $apk_path"
           echo "apk_path=$apk_path" >> $GITHUB_ENV
 
-      - name: Upload build artifacts
+      - name: Sign APK
+        run: |
+          apksigner sign \
+            --ks my-release-key.jks \
+            --ks-pass pass:${{ secrets.KEYSTORE_PASSWORD }} \
+            --key-pass pass:${{ secrets.KEY_PASSWORD }} \
+            --out app-release-signed.apk \
+            ${{ env.apk_path }}
+
+      - name: Find signed APK files
+        id: find-signed-apk
+        run: |
+          signed_apk_path=$(find . -name "app-release-signed.apk" | head -n 1)
+          echo "Found signed APK path: $signed_apk_path"
+          echo "signed_apk_path=$signed_apk_path" >> $GITHUB_ENV
+
+      - name: Upload signed APK
         uses: actions/upload-artifact@v4
         with:
           name: my-app-artifacts
-          path: ${{ env.apk_path }}
+          path: ${{ env.signed_apk_path }}
