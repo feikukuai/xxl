@@ -1,66 +1,45 @@
 name: Build and Test CI
-# 定义整个工作流程的名称为“Build and Test CI”，这个名字将在GitHub Actions的UI中显示。
 
-on: [push]
-#on:
+on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
-# 定义触发工作流程的事件。这里配置为在向仓库的任何分支进行push操作时触发此工作流程。
-# 如果您只想在向main分支push时触发，可以指定为 `on: [push]` 下面的 `branches`:
-# on:
-#   push:
-#     branches:
-#       - main
 
 jobs:
   build-Android:
     runs-on: ubuntu-latest
-    # 定义一个作业（job）名为“build-Android”，并指定该作业将在最新版本的Ubuntu虚拟机环境中运行。
 
     permissions:
       contents: read
       packages: write
-    # 设置作业的权限，`contents: read` 允许读取仓库内容，`packages: write` 允许写入包管理器。
 
     steps:
-    - uses: actions/checkout@v2
-      # 使用 `actions/checkout@v2` 操作来检出仓库代码，这样在后续步骤中可以访问和操作代码。
-      # 注意：这里使用的是v2版本，但最新版本可能是v3或更高，使用最新版可以确保获得最新的改进和修复。
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up JDK 18
-      uses: actions/setup-java@v3
-      with:
-        java-version: '18'
-        distribution: 'adopt'
-        cache: gradle
-      # 使用 `actions/setup-java@v3` 操作来设置Java开发环境。
-      # `java-version: '18'` 指定使用Java 18版本。
-      # `distribution: 'adopt'` 指定使用Adoptium作为JDK的发行版。
-      # `cache: gradle` 启用Gradle缓存以提高构建性能。
+      - name: Set up JDK 18
+        uses: actions/setup-java@v3
+        with:
+          java-version: '18'
+          distribution: 'temurin'
+          cache: gradle
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-      # 运行shell命令 `chmod +x gradlew` 来给gradlew文件添加执行权限，以便可以在后续步骤中运行它。
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
-    - name: Build with Gradle
-      run: ./gradlew build
-      # 运行 `./gradlew build` 命令来使用Gradle构建项目。
-      # 这通常包括编译代码、运行测试和生成构建输出。
+      - name: Build with Gradle
+        run: ./gradlew build
 
-    - name: 查找构建好的 APK 文件
-      run: |
-        find app/build/ -name "*.apk" -exec echo {} \;
-        
-      # 运行shell命令来查找构建生成的APK文件路径。
-      # `find app/build/ -name "*.apk"` 查找构建目录下所有的APK文件。
-      # `echo "Found APK path: $apk_path"` 打印出找到的APK文件路径。
-      # `echo "apk_path=$apk_path" >>$GITHUB_ENV` 将APK文件路径保存到环境变量中，以便后续步骤使用。
+      - name: Find built APK files
+        id: find-apk
+        run: |
+          apk_path=$(find app/build/outputs/apk/ -name "*.apk" | head -n 1)
+          echo "Found APK path: $apk_path"
+          echo "apk_path=$apk_path" >> $GITHUB_ENV
 
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: my-app-artifacts
-        path: app/build/outputs/apk/debug/app-debug.apk
-      # 使用 `actions/upload-artifact@v4` 操作来上传构建生成的apk文件作为工作流程的输出。
-      # `name: my-app-artifacts` 为上传的artifact设置一个名称。
-      # `path: ${{ env.apk_path }}` 使用之前保存到环境变量中的APK文件路径。
-    
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: my-app-artifacts
+          path: ${{ env.apk_path }}
