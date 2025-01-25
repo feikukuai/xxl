@@ -90,7 +90,7 @@ remove_empty_paragraphs('input1.docx')
 
 
 # 定义替换规则
-replacement_rules = {'论文': '洛文','中人': '众人','若问': '洛文','螺纹': '洛文','罗文': '洛文','美丽': '梅莉','微微辣': '薇薇拉','丽雅': '莉娅','需要多': '西奥多',}
+replacement_rules = {'论文': '洛文',}
 
 # 检查并打开docx文件
 doc_path = os.path.join(script_dir, 'input1.docx')

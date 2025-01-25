@@ -2,6 +2,9 @@ from docx import Document
 # 获取当前脚本所在目录的绝对路径
 import os
 
+from pathlib import Path
+from openai import OpenAI
+
 # 获取Python解释器（或exe）所在目录
 exe_dir = os.path.dirname(sys.executable)
 print(exe_dir)
@@ -12,7 +15,7 @@ os.chdir(exe_dir)
 source_dir = os.path.dirname(sys.executable)
 print(f"正确工作路径 directory: {os.getcwd()}")
 # 需要检查和创建的文件列表
-doc_files = ['input.docx','moxing.docx','input1.docx', 'output.docx', 'temp.docx', 'text3.docx','定位编辑.docx','fixtext.docx', 'text2.docx']
+doc_files = ['input.docx','moxing.docx','input1.docx', 'output.docx', 'temp.docx', 'text3.docx','定位编辑.docx','fixtextgpt.docx', 'text2.docx']
 # 检查每个文件是否存在，如果不存在则创建一个空文档
 for filename in doc_files:
     file_path = os.path.join(script_dir, filename)
@@ -45,8 +48,8 @@ def read_replacement_rules_from_doc(file_path, delimiter=':'):
 
     return replacement_rules
 
-# 从fixtext.docx中读取替换规则
-replacement_rules = read_replacement_rules_from_doc('fixtext.docx')
+# 从fixtextgpt.docx中读取替换规则
+replacement_rules = read_replacement_rules_from_doc('fixtextgpt.docx')
 
 # 打印读取到的替换规则
 print(replacement_rules)
@@ -128,7 +131,7 @@ for paragraph in doc1.paragraphs:
         paragraph.clear()
 
 # 保存更改为 'output.docx'
-doc1.save('output.docx')
+doc1.save('temp.docx')
 
 os.environ['DASHSCOPE_API_KEY'] = 'sk-ade26912d9f6406fabe8edd7c5b2b7b1'
 from http import HTTPStatus
@@ -363,7 +366,7 @@ if __name__ == '__main__':
     for i, text_batch in enumerate(text_batches):
         fieldQ = text_batch[-suzi:]
         messages = [{"role": "user", "content": text_batch}]
-        culi(messages, api_key,fieldQ)
+        #culi(messages, api_key,fieldQ)
 from docx import Document
     
 # 使用您的实际文件路径替换 'your_file_path.docx'
@@ -389,3 +392,47 @@ def remove_empty_paragraphs(doc_path):
 
 # 调用函数，替换成你的文档路径
 remove_empty_paragraphs('output.docx')
+
+
+
+
+
+# 读取Word文档
+doc = Document('input1.docx')
+
+gpttext = ''
+
+# 提取段落文本
+for paragraph in doc.paragraphs:
+    gpttext += paragraph.text + '\n'  # 保留段落换行
+
+# 提取表格中的文本
+for table in doc.tables:
+    for row in table.rows:
+        for cell in row.cells:
+            gpttext += cell.text + '\n'  # 单元格内容换行分隔
+
+# 移除最后一个多余的换行符（可选）
+gpttext = gpttext.strip()
+
+# 现在gpttext变量包含文档的所有文本内容
+print(gpttext)  # 可选：打印结果验证
+
+
+
+
+speech_file_path = Path(__file__).parent / "siliconcloud-generated-speech.mp3"
+
+client = OpenAI(
+    api_key="您的 APIKEY", # 从 https://cloud.siliconflow.cn/account/ak 获取
+    base_url="https://api.siliconflow.cn/v1"
+)
+
+with client.audio.speech.with_streaming_response.create(
+  model="FunAudioLLM/CosyVoice2-0.5B", # 支持 fishaudio / GPT-SoVITS / CosyVoice2-0.5B 系列模型
+  voice="FunAudioLLM/CosyVoice2-0.5B:alex", # 系统预置音色
+  # 用户输入信息
+  input="你能用高兴的情感说吗？<|endofprompt|>今天真是太开心了，马上要放假了！I'm so happy, Spring Festival is coming!",
+  response_format="mp3" # 支持 mp3, wav, pcm, opus 格式
+) as response:
+    response.stream_to_file(speech_file_path)
