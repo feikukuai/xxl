@@ -429,9 +429,8 @@ ming = inputtext
 # 取 ming 的前五个字符作为文件名
 file_name = re.sub(r'[<>:"/\\|?*]', '', ming[:5]) + ".mp3"
 # 指定输出目录
-output_dir = file_path / "output"
-output_dir.mkdir(exist_ok=True)  # 确保目录存在
-speech_file_path = output_dir / file_name
+
+speech_file_path = Path(__file__).parent / file_name
 
 
 client = OpenAI(
@@ -446,6 +445,5 @@ with client.audio.speech.with_streaming_response.create(
   input= inputtext,
   response_format="mp3" # 支持 mp3, wav, pcm, opus 格式
 ) as response:
-    response.stream_to_file(file_path)
-    
+    response.stream_to_file(speech_file_path)
     
