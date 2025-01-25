@@ -1,7 +1,7 @@
 name: Build Android App and EXE
 
 on: [push]
-on:
+
  # workflow_dispatch:
 
 jobs:
