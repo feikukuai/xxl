@@ -6,8 +6,8 @@ from sparkai.llm.llm import ChatSparkLLM, ChunkPrintHandler
 from sparkai.core.messages import ChatMessage
 SPARKAI_URL = 'wss://spark-api.xf-yun.com/v3.5/chat'
 SPARKAI_APP_ID = '5c0003b4'
-SPARKAI_API_SECRET = 'e9b633f2a326ab1b0bff7f891c5ff4f1fe'
-SPARKAI_API_KEY = 'e808152dc0a6a0064dc50034ce6b94252e'
+SPARKAI_API_SECRET = 'e9b633f2a326ab10bff7f891c5ff4f1fe'
+SPARKAI_API_KEY = 'e808152dc0a6a0064dc5034ce6b94252e'
 SPARKAI_DOMAIN = 'generalv3.5'
 # 获取Python解释器（或exe）所在目录
 exe_dir = os.path.dirname(sys.executable)
@@ -137,7 +137,7 @@ for paragraph in doc1.paragraphs:
 # 保存更改为 'output.docx'
 doc1.save('output.docx')
 
-os.environ['DASHSCOPE_API_KEY'] = 'sk-eade26912d9f6406fabe8edd7c5b2b7b1'
+os.environ['DASHSCOPE_API_KEY'] = 'sk-eade26912d9f606fbe8edd7c5b2b7b1'
 from http import HTTPStatus
 import dashscope
 import json
