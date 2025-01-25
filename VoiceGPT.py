@@ -1,7 +1,7 @@
 from docx import Document
 # 获取当前脚本所在目录的绝对路径
 import os
-
+import re
 from pathlib import Path
 from openai import OpenAI
 
