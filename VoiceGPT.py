@@ -439,8 +439,8 @@ client = OpenAI(
 )
 
 with client.audio.speech.with_streaming_response.create(
-  model="GPT-SoVITS", # 支持 fishaudio / GPT-SoVITS / CosyVoice2-0.5B 系列模型
-  voice="GPT-SoVITS:benjamin", # 系统预置音色
+  model="RVC-Boss/GPT-SoVITS", # 支持 fishaudio / GPT-SoVITS / CosyVoice2-0.5B 系列模型
+  voice="RVC-Boss/GPT-SoVITS:benjamin", # 系统预置音色
   # 用户输入信息
   input= inputtext,
   response_format="mp3" # 支持 mp3, wav, pcm, opus 格式
