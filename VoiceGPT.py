@@ -1,7 +1,7 @@
 from docx import Document
 # 获取当前脚本所在目录的绝对路径
 import os
-import re
+
 from pathlib import Path
 from openai import OpenAI
 
@@ -422,10 +422,7 @@ for paragraph in doc.paragraphs:
   # 应该从安全的地方获取
 
 
-
-    
-    
-    
+   
 # 假设 ming 是一个变量，存储了你想要的文件名前缀
 ming = inputtext
 
@@ -436,19 +433,19 @@ output_dir = file_path / "output"
 output_dir.mkdir(exist_ok=True)  # 确保目录存在
 speech_file_path = output_dir / file_name
 
-# 初始化 OpenAI 客户端
+
 client = OpenAI(
-    api_key="您的 APIKEY",  # 从 https://cloud.siliconflow.cn/account/ak 获取
+    api_key= api_key, # 从 https://cloud.siliconflow.cn/account/ak 获取
     base_url="https://api.siliconflow.cn/v1"
 )
 
-# 生成语音并保存
 with client.audio.speech.with_streaming_response.create(
-    model="FunAudioLLM/CosyVoice2-0.5B",  # 支持 fishaudio / GPT-SoVITS / CosyVoice2-0.5B 系列模型
-    voice="FunAudioLLM/CosyVoice2-0.5B:alex",  # 系统预置音色
-    input="你能用高兴的情感说吗？<|endofprompt|>今天真是太开心了，马上要放假了！I'm so happy, Spring Festival is coming!",
-    response_format="mp3"  # 支持 mp3, wav, pcm, opus 格式
+  model="GPT-SoVITS", # 支持 fishaudio / GPT-SoVITS / CosyVoice2-0.5B 系列模型
+  voice="GPT-SoVITS:benjamin", # 系统预置音色
+  # 用户输入信息
+  input= inputtext
+  response_format="mp3" # 支持 mp3, wav, pcm, opus 格式
 ) as response:
-    response.stream_to_file(speech_file_path)
-
-print(f"语音文件已保存为: {speech_file_path}")
+    response.stream_to_file(file_path)
+    
+    
