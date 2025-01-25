@@ -305,8 +305,22 @@ def culi(a, api_key,fieldQ):
     # 保存修改后的文档
     doc.save('output.docx')
 
+
+
+
+
+
+# 读取Word文档
+doc = Document('AIapi.docx')
+
+gpttext = ''
+
+# 提取段落文本
+for paragraph in doc.paragraphs:
+    gpttext += paragraph.text  # 保留段落换行
+
 # 使用示例
-api_key = "sk-7b07c77962f445e88eb184369d0e49f2"  # 应该从安全的地方获取
+api_key = gpttext  # 应该从安全的地方获取
 
 
 
