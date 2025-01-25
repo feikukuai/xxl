@@ -6,8 +6,8 @@ from sparkai.llm.llm import ChatSparkLLM, ChunkPrintHandler
 from sparkai.core.messages import ChatMessage
 SPARKAI_URL = 'wss://spark-api.xf-yun.com/v3.5/chat'
 SPARKAI_APP_ID = '5c0003b4'
-SPARKAI_API_SECRET = '9b633f2a326ab1b0bff7f891c5ff4f1f'
-SPARKAI_API_KEY = '808152dc0a6a0064dc50034ce6b94252'
+SPARKAI_API_SECRET = 'e9b633f2a326ab1b0bff7f891c5ff4f1fe'
+SPARKAI_API_KEY = 'e808152dc0a6a0064dc50034ce6b94252e'
 SPARKAI_DOMAIN = 'generalv3.5'
 # 获取Python解释器（或exe）所在目录
 exe_dir = os.path.dirname(sys.executable)
