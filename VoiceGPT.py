@@ -1,14 +1,7 @@
 from docx import Document
 # 获取当前脚本所在目录的绝对路径
 import os
-import sys
-from sparkai.llm.llm import ChatSparkLLM, ChunkPrintHandler
-from sparkai.core.messages import ChatMessage
-SPARKAI_URL = 'wss://spark-api.xf-yun.com/v3.5/chat'
-SPARKAI_APP_ID = '5c0003b4'
-SPARKAI_API_SECRET = '9b633f2a326ab1b0bff7f891c5ff4f1f'
-SPARKAI_API_KEY = '808152dc0a6a0064dc50034ce6b94252'
-SPARKAI_DOMAIN = 'generalv3.5'
+
 # 获取Python解释器（或exe）所在目录
 exe_dir = os.path.dirname(sys.executable)
 print(exe_dir)
@@ -19,7 +12,7 @@ os.chdir(exe_dir)
 source_dir = os.path.dirname(sys.executable)
 print(f"正确工作路径 directory: {os.getcwd()}")
 # 需要检查和创建的文件列表
-doc_files = ['input.docx','moxing.docx','input1.docx', 'output.docx', 'temp.docx', 'text1.docx','定位编辑.docx','fixtext.docx', 'text2.docx']
+doc_files = ['input.docx','moxing.docx','input1.docx', 'output.docx', 'temp.docx', 'text3.docx','定位编辑.docx','fixtext.docx', 'text2.docx']
 # 检查每个文件是否存在，如果不存在则创建一个空文档
 for filename in doc_files:
     file_path = os.path.join(script_dir, filename)
@@ -137,7 +130,7 @@ for paragraph in doc1.paragraphs:
 # 保存更改为 'output.docx'
 doc1.save('output.docx')
 
-os.environ['DASHSCOPE_API_KEY'] = 'sk-eade26912d9f6406fabe8edd7c5b2b7b1'
+os.environ['DASHSCOPE_API_KEY'] = 'sk-ade26912d9f6406fabe8edd7c5b2b7b1'
 from http import HTTPStatus
 import dashscope
 import json
@@ -204,7 +197,7 @@ def read_text_from_doc(file_path, batch_size=500, min_batch_size=500, setup_info
     print("你选择了数字1")
 
 
-    # 读取文档text1和text2
+    # 读取文档text3和text2
     def read_docx(filename):
         document = Document(filename)
         text_content = [paragraph.text for paragraph in document.paragraphs]
@@ -213,14 +206,14 @@ def read_text_from_doc(file_path, batch_size=500, min_batch_size=500, setup_info
     # 获取当前脚本所在目录
 
     # 计算文本文件的相对路径
-    file_path_text1 = os.path.join(script_dir, 'text1.docx')
+    file_path_text3 = os.path.join(script_dir, 'text3.docx')
     file_path_text2 = os.path.join(script_dir, 'text2.docx')
 
-    text1 = read_docx(file_path_text1)
+    text3 = read_docx(file_path_text3)
     text2 = read_docx(file_path_text2)
 
-    print("text1的内容：")
-    print(text1)
+    print("text3的内容：")
+    print(text3)
 
     print("\ntext2的内容：")
     print(text2)
@@ -230,13 +223,13 @@ def read_text_from_doc(file_path, batch_size=500, min_batch_size=500, setup_info
     if user_input == 1:
         text2 = ""
     elif user_input == 2:
-        text1 = ""
+        text3 = ""
     else:
         # 如果输入既不是1也不是2，则可以给出错误提示或其他处理方式
         print("无效输入，请输入1或2")
 
     for i in range(len(text_batches)):
-        text_batches[i] = text1 + "" + text_batches[i] + "" + text2
+        text_batches[i] = text3 + "" + text_batches[i] + "" + text2
 
     # for i in range(len(text_batches)):
     #  text_batches[i] = text_batches[i] + "" + text2
@@ -247,30 +240,29 @@ input_file_path = 'input1.docx'
 
 
 
+# 确保ai处理的函数独立
+from openai import OpenAI
 
-def culi(context):
-    spark = ChatSparkLLM(
-        spark_api_url=SPARKAI_URL,
-        spark_app_id=SPARKAI_APP_ID,
-        spark_api_key=SPARKAI_API_KEY,
-        spark_api_secret=SPARKAI_API_SECRET,
-        spark_llm_domain=SPARKAI_DOMAIN,
-        streaming=False,
+from docx import Document
+
+def culi(a, api_key,fieldQ):
+    # 创建 OpenAI 客户端实例
+    client = OpenAI(api_key=api_key, base_url="https://api.deepseek.com")
+    
+    # 使用传入的消息列表a进行聊天
+    response = client.chat.completions.create(
+        model="deepseek-chat",
+        messages=a
     )
-    print("运行中")
-
-    messages = [ChatMessage(
-        role="user",
-        content=context
-    )]
-    handler = ChunkPrintHandler()
-    a = spark.generate([messages], callbacks=[handler])
-
+    
+    # 将API的响应添加到消息列表中
+    
+    a = response.choices[0].message
     result_string = str(a)
     content_start = result_string.find('content=')
     if content_start != -1:
         content_start += len('content=')
-        content_end = result_string.find('))]] ', content_start)
+        content_end = result_string.find(', refusal=None', content_start)
         if content_end == -1:
             content_end = len(result_string)
         content = result_string[content_start:content_end].strip('"')
@@ -281,19 +273,98 @@ def culi(context):
     sd_content = sd_content + "\nA"
     print(sd_content)
     doc = Document('output.docx')
+    chinese_punctuation = "，。……！？…………；：、（）〈〉《》{}【】“”‘’"
+    from fuzzywuzzy import process
+    # 获取所有可能的匹配项，按分数排序
+    import re
+    
+    sentences = re.split(r'([' + re.escape(chinese_punctuation) + '])', sd_content)
+    # 将标点符号重新拼接到句子上
+    sentences = [sentences[i] + sentences[i+1] for i in range(0, len(sentences)-1, 2)]
+    pattern = re.compile(r".*[" + re.escape(chinese_punctuation) + "]$")
+    candidates = [s for s in sentences if pattern.match(s)]
+    matches = process.extract(fieldQ, candidates, limit=20)
+    
+# 遍历匹配项，找到 matched_word
+    matched_word = None
+    score = 0
+    for match, match_score in matches:
+        if match and match[-1] in chinese_punctuation and match_score > pipeisuzi:
+           matched_word = match
+           score = match_score
+           break
+           
+    if matched_word:
+       position = sd_content.find(matched_word)
+       if position != -1:
+           sd_content = sd_content[:position + len(matched_word)]
+    else:
+        sd_content = sd_content
     doc.add_paragraph(sd_content)
-    print("已经存储")
 
     # 保存修改后的文档
     doc.save('output.docx')
+
+# 使用示例
+api_key = "sk-7b07c77962f445e88eb184369d0e49f2"  # 应该从安全的地方获取
+
+
+
+# 打开 .docx 文件
+doc = Document('suzi.docx')
+
+# 初始化一个空字符串来存储文档内容
+content = ''
+
+# 遍历文档中的每个段落，并将其内容添加到变量 content 中
+for para in doc.paragraphs:
+    content += para.text.strip()  # 使用 strip() 去除空白字符
+
+# 假设 content 是一个数字，将其转换为整数或浮点数
+try:
+    if '.' in content:  # 如果包含小数点，转换为浮点数
+        suzi = float(content)
+        
+    else:  # 否则转换为整数
+        suzi = int(content)
+        
+except ValueError:
+    print("文件内容不是一个有效的数字！")
+    suzi = None  # 如果转换失败，将 a 设置为 None
+
+
+# 打开 .docx 文件
+doc = Document('pipeisuzi.docx')
+
+# 初始化一个空字符串来存储文档内容
+content = ''
+
+# 遍历文档中的每个段落，并将其内容添加到变量 content 中
+for para in doc.paragraphs:
+    content += para.text.strip()  # 使用 strip() 去除空白字符
+
+# 假设 content 是一个数字，将其转换为整数或浮点数
+try:
+    if '.' in content:  # 如果包含小数点，转换为浮点数
+        pipeisuzi = float(content)
+        
+    else:  # 否则转换为整数
+        pipeisuzi = int(content)
+        
+except ValueError:
+    print("文件内容不是一个有效的数字！")
+    pipeisuzi = None  # 如果转换失败，将 a 设置为 None
+
+
 
 if __name__ == '__main__':
     text2 = ""
     text_batches = read_text_from_doc(input_file_path, setup_info=text2)
     for i, text_batch in enumerate(text_batches):
-        culi(text_batch)
+        fieldQ = text_batch[-suzi:]
+        messages = [{"role": "user", "content": text_batch}]
+        culi(messages, api_key,fieldQ)
 from docx import Document
-
     
 # 使用您的实际文件路径替换 'your_file_path.docx'
 

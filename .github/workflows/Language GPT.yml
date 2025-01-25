@@ -1,0 +1,46 @@
+name: Build Android App and EXE
+
+on: [push]
+on:
+ # workflow_dispatch:
+
+jobs:
+  build-exe:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # 设置Python环境
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      # 安装PyInstaller来构建.exe文件
+      - name: Install PyInstaller
+        run: pip install pyinstaller
+        
+      - name: Install docx
+        run: pip install python-docx
+      - name: Install data
+        run: pip install dashscope
+        
+      - name: Install fuzz
+        run: pip install fuzzywuzzy
+
+      - name: Install ai
+        run: pip3 install openai
+
+      # 构建可执行文件
+      - name: Build EXE
+        run: |
+          pyinstaller --onefile VoiceGPT.py
+        # 确保hello.py脚本在正确的路径下
+
+      # 上传.exe文件
+      - name: Upload EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-exe
+          path: dist/*.exe

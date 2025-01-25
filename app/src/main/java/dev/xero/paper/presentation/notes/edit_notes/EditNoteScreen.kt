@@ -79,6 +79,7 @@ fun EditNoteScreen(
                     }
                     
                     // 调用
+                    cufa()
                     val outtext = processText("你好") // 你看看这里附近有问题没，其他地方不用看
                     Toast.makeText(context, outtext, Toast.LENGTH_SHORT).show() // 使用正确的context
                     onSaveNoteButtonClicked()
@@ -131,4 +132,8 @@ fun EditNoteScreen(
 // 输入一个字符串，返回处理后的字符串
 fun processText(input: String): String {
     return "结果还行还行：$input"
+}
+// 定义一个名为 触发 的函数
+fun cufa() {
+    println("Hello World!")
 }
