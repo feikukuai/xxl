@@ -130,7 +130,7 @@ for paragraph in doc1.paragraphs:
 # 保存更改为 'output.docx'
 doc1.save('output.docx')
 
-os.environ['DASHSCOPE_API_KEY'] = 'sk-ade26912d9f6406fabe8edd7c5b2b7b1'
+os.environ['DASHSCOPE_API_KEY'] = 'sk-ade26912d9f406fabe8edd7c5b2b7b1'
 from http import HTTPStatus
 import dashscope
 import json
@@ -280,7 +280,7 @@ def culi(a, api_key):
     doc.save('output.docx')
 
 # 使用示例
-api_key = "sk-7b07c77962f445e88eb184369d0e49f2"  # 应该从安全的地方获取
+api_key = "sk-7b07c77962f445e88b184369d0e49f2"  # 应该从安全的地方获取
 
 
 
