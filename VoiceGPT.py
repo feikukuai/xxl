@@ -309,7 +309,7 @@ def culi(a, api_key,fieldQ):
     doc.save('output.docx')
 
 # 使用示例
-api_key = "sk-7b07c77962f445e88eb184369d0e49f2"  # 应该从安全的地方获取
+api_key = "sk-7b07yusjsh2"  # 应该从安全的地方获取
 
 
 
@@ -397,42 +397,58 @@ remove_empty_paragraphs('output.docx')
 
 
 
-# 读取Word文档
-doc = Document('input1.docx')
+# 读取Word文档，获取api
+doc = Document('GPTSAPI.docx')
 
 gpttext = ''
 
 # 提取段落文本
 for paragraph in doc.paragraphs:
-    gpttext += paragraph.text + '\n'  # 保留段落换行
+    gpttext += paragraph.text  # 保留段落换行
 
-# 提取表格中的文本
-for table in doc.tables:
-    for row in table.rows:
-        for cell in row.cells:
-            gpttext += cell.text + '\n'  # 单元格内容换行分隔
-
-# 移除最后一个多余的换行符（可选）
-gpttext = gpttext.strip()
-
-# 现在gpttext变量包含文档的所有文本内容
-print(gpttext)  # 可选：打印结果验证
+# 使用示例
+api_key = gpttext  # 应该从安全的地方获取
 
 
+doc = Document('input1.docx')
+
+inputtext = ''
+
+# 提取段落文本
+for paragraph in doc.paragraphs:
+    
+    inputtext += paragraph.text + '\n'  # 保留段落换行
+
+  # 应该从安全的地方获取
 
 
-speech_file_path = Path(__file__).parent / "siliconcloud-generated-speech.mp3"
 
+    
+    
+    
+# 假设 ming 是一个变量，存储了你想要的文件名前缀
+ming = inputtext
+
+# 取 ming 的前五个字符作为文件名
+file_name = re.sub(r'[<>:"/\\|?*]', '', ming[:5]) + ".mp3"
+# 指定输出目录
+output_dir = file_path / "output"
+output_dir.mkdir(exist_ok=True)  # 确保目录存在
+speech_file_path = output_dir / file_name
+
+# 初始化 OpenAI 客户端
 client = OpenAI(
-    api_key="您的 APIKEY", # 从 https://cloud.siliconflow.cn/account/ak 获取
+    api_key="您的 APIKEY",  # 从 https://cloud.siliconflow.cn/account/ak 获取
     base_url="https://api.siliconflow.cn/v1"
 )
 
+# 生成语音并保存
 with client.audio.speech.with_streaming_response.create(
-  model="FunAudioLLM/CosyVoice2-0.5B", # 支持 fishaudio / GPT-SoVITS / CosyVoice2-0.5B 系列模型
-  voice="FunAudioLLM/CosyVoice2-0.5B:alex", # 系统预置音色
-  # 用户输入信息
-  input="你能用高兴的情感说吗？<|endofprompt|>今天真是太开心了，马上要放假了！I'm so happy, Spring Festival is coming!",
-  response_format="mp3" # 支持 mp3, wav, pcm, opus 格式
+    model="FunAudioLLM/CosyVoice2-0.5B",  # 支持 fishaudio / GPT-SoVITS / CosyVoice2-0.5B 系列模型
+    voice="FunAudioLLM/CosyVoice2-0.5B:alex",  # 系统预置音色
+    input="你能用高兴的情感说吗？<|endofprompt|>今天真是太开心了，马上要放假了！I'm so happy, Spring Festival is coming!",
+    response_format="mp3"  # 支持 mp3, wav, pcm, opus 格式
 ) as response:
     response.stream_to_file(speech_file_path)
+
+print(f"语音文件已保存为: {speech_file_path}")
