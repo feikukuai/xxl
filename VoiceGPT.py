@@ -15,7 +15,7 @@ os.chdir(exe_dir)
 source_dir = os.path.dirname(sys.executable)
 print(f"正确工作路径 directory: {os.getcwd()}")
 # 需要检查和创建的文件列表
-doc_files = ['input.docx','moxing.docx','input1.docx', 'output.docx', 'temp.docx', 'text3.docx','定位编辑.docx','fixtextgpt.docx', 'text2.docx']
+doc_files = ['input.docx','moxing.docx','input1.docx', 'ouput.docx', 'temp.docx', 'text3.docx','定位编辑.docx','fixtextgpt.docx', 'text2.docx']
 # 检查每个文件是否存在，如果不存在则创建一个空文档
 for filename in doc_files:
     file_path = os.path.join(script_dir, filename)
@@ -115,9 +115,9 @@ doc.save(doc_path)
 import shutil
 
 # 复制文件
-shutil.copyfile('output.docx', 'temp.docx')
+shutil.copyfile('ouput.docx', 'temp.docx')
 
-# 然后使用以下代码清空并保存 'temp.docx' 为 'output.docx'
+# 然后使用以下代码清空并保存 'temp.docx' 为 'ouput.docx'
 from docx import Document
 
 # 打开文档
@@ -130,7 +130,7 @@ for paragraph in doc1.paragraphs:
     else:
         paragraph.clear()
 
-# 保存更改为 'output.docx'
+# 保存更改为 'ouput.docx'
 doc1.save('temp.docx')
 
 os.environ['DASHSCOPE_API_KEY'] = 'sk-ade26912d9f6406fabe8edd7c5b2b7b1'
@@ -163,8 +163,8 @@ def save_to_docx(response):
         doc.add_paragraph(content)
 
     # 合并文档
-    merge_two_docs('output.docx', doc)
-    print("内容已添加到output.docx")
+    merge_two_docs('ouput.docx', doc)
+    print("内容已添加到ouput.docx")
 
 
 def read_text_from_doc(file_path, batch_size=500, min_batch_size=500, setup_info="text2 "):
@@ -275,7 +275,7 @@ def culi(a, api_key,fieldQ):
     sd_content = sd_content.replace('\\n', '\n')
     sd_content = sd_content + "\nA"
     print(sd_content)
-    doc = Document('output.docx')
+    doc = Document('ouput.docx')
     chinese_punctuation = "，。……！？…………；：、（）〈〉《》{}【】“”‘’"
     from fuzzywuzzy import process
     # 获取所有可能的匹配项，按分数排序
@@ -306,7 +306,7 @@ def culi(a, api_key,fieldQ):
     doc.add_paragraph(sd_content)
 
     # 保存修改后的文档
-    doc.save('output.docx')
+    doc.save('ouput.docx')
 
 # 使用示例
 api_key = "sk-7b07yusjsh2"  # 应该从安全的地方获取
@@ -374,8 +374,8 @@ from docx import Document
 # 获取当前脚本所在目录的绝对路径
 
 
-# 构建output.docx文件的绝对路径
-file_path = os.path.join(script_dir, 'output.docx')
+# 构建ouput.docx文件的绝对路径
+file_path = os.path.join(script_dir, 'ouput.docx')
 print(file_path)
 print("位置在于:")
 
@@ -391,7 +391,7 @@ def remove_empty_paragraphs(doc_path):
     doc.save(doc_path)
 
 # 调用函数，替换成你的文档路径
-remove_empty_paragraphs('output.docx')
+remove_empty_paragraphs('ouput.docx')
 
 
 
