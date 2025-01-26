@@ -430,7 +430,7 @@ ming = inputtext
 file_name = re.sub(r'[<>:"/\\|?*]', '', ming[:5]) + ".mp3"
 # 指定输出目录
 
-speech_file_path = script_dir / file_name
+speech_file_path = os.path.join(script_dir, file_name)
 
 
 client = OpenAI(
