@@ -429,8 +429,8 @@ ming = inputtext
 # 取 ming 的前五个字符作为文件名
 file_name = re.sub(r'[<>:"/\\|?*]', '', ming[:5]) + ".mp3"
 # 指定输出目录
-
-speech_file_path = os.path.join(script_dir, file_name)
+output_dir = os.path.join(script_dir, "outputgpt")
+speech_file_path = os.path.join(output_dir, file_name)
 
 
 client = OpenAI(
