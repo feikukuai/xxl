@@ -29,6 +29,6 @@ run_command('git remote add origin git@github.com:feikukuai/xxl.git')
 # 推送到远程仓库
 # 注意：这里没有使用 -u 参数，如果需要可以添加
 #run_command('git push -u origin main --force')
-run_command('git push origin HEAD:main')
+run_command('git push origin HEAD:ram')
 # 如果你使用的是 'main' 分支，请使用以下命令
 # run_command('git push origin main')
