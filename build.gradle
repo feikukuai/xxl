@@ -1,3 +1,4 @@
+ 
 // 定义构建脚本扩展，可以在整个项目范围内使用这些属性
 buildscript {
     ext {
@@ -17,3 +18,24 @@ plugins {
     // 应用Google的Dagger Hilt Android插件，不立即应用
     id 'com.google.dagger.hilt.android' version '2.45' apply false
 }
+
+// 添加依赖项，以便在所有子项目中可用
+allprojects {
+    repositories {
+        // 确保所有子项目都使用相同的仓库配置
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // 添加Apache POI的OOXML库依赖项
+        implementation 'org.apache.poi:poi-ooxml:5.2.2'
+    }
+}
+
+// 如果你只想在特定的子项目中添加这个依赖项，可以使用subprojects块
+// subprojects {
+//     dependencies {
+//         implementation 'org.apache.poi:poi-ooxml:5.2.2'
+//     }
+// }
+ 
