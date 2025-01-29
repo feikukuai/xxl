@@ -31,11 +31,4 @@ allprojects {
         implementation 'org.apache.poi:poi-ooxml:5.2.2'
     }
 }
-
-// 如果你只想在特定的子项目中添加这个依赖项，可以使用subprojects块
-// subprojects {
-//     dependencies {
-//         implementation 'org.apache.poi:poi-ooxml:5.2.2'
-//     }
-// }
  
