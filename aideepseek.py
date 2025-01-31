@@ -187,7 +187,7 @@ def read_text_from_doc(file_path, batch_size=500, min_batch_size=500, setup_info
     elif len(text_batches) > 0:
         text_batches[-1] += current_batch
     # 获取用户输入
-    
+
 
 
 
@@ -236,6 +236,47 @@ def read_text_from_doc(file_path, batch_size=500, min_batch_size=500, setup_info
     return text_batches
 
 
+
+ 
+ 
+
+def extract_info_from_docx(document_content):
+    # 将字符串内容转换为Document对象
+    document = Document()
+    for line in document_content.strip().split('\n'):
+        if line.strip() != "":  # 忽略空行
+            document.add_paragraph(line)
+
+    # 读取第一行的数字，以确定需要提取哪个公司的信息
+    first_line_number = int(document.paragraphs[0].text.strip())
+
+    # 初始化变量
+    a, b = None, None
+
+    # 遍历文档中的段落
+    for i, paragraph in enumerate(document.paragraphs):
+        if paragraph.text.startswith(str(first_line_number)) and '公司:' in paragraph.text:
+            a = paragraph.text.split('公司:')[1].strip()
+        elif paragraph.text.startswith('模型:') and a is not None:
+            b = paragraph.text.split('模型:')[1].strip()
+            break
+
+    return a, b
+docx_file1 = 'apiword.docx'
+
+# 读取docx文件
+document_content1 = Document(docx_file1)
+# 使用函数并传入模拟的docx内容
+amx, bmx = extract_info_from_docx(document_content1)
+
+
+
+
+
+
+
+
+
 input_file_path = 'input1.docx'
 
 
@@ -247,16 +288,16 @@ from docx import Document
 
 def culi(a, api_key,fieldQ):
     # 创建 OpenAI 客户端实例
-    client = OpenAI(api_key=api_key, base_url="https://api.deepseek.com")
-    
+    client = OpenAI(api_key=api_key, base_url=amx)
+
     # 使用传入的消息列表a进行聊天
     response = client.chat.completions.create(
-        model="deepseek-chat",
+        model=bmx,
         messages=a
     )
-    
+
     # 将API的响应添加到消息列表中
-    
+
     a = response.choices[0].message
     result_string = str(a)
     content_start = result_string.find('content=')
@@ -277,14 +318,14 @@ def culi(a, api_key,fieldQ):
     from fuzzywuzzy import process
     # 获取所有可能的匹配项，按分数排序
     import re
-    
+
     sentences = re.split(r'([' + re.escape(chinese_punctuation) + '])', sd_content)
     # 将标点符号重新拼接到句子上
     sentences = [sentences[i] + sentences[i+1] for i in range(0, len(sentences)-1, 2)]
     pattern = re.compile(r".*[" + re.escape(chinese_punctuation) + "]$")
     candidates = [s for s in sentences if pattern.match(s)]
     matches = process.extract(fieldQ, candidates, limit=20)
-    
+
 # 遍历匹配项，找到 matched_word
     matched_word = None
     score = 0
@@ -293,7 +334,7 @@ def culi(a, api_key,fieldQ):
            matched_word = match
            score = match_score
            break
-           
+
     if matched_word:
        position = sd_content.find(matched_word)
        if position != -1:
@@ -304,6 +345,10 @@ def culi(a, api_key,fieldQ):
 
     # 保存修改后的文档
     doc.save('output.docx')
+
+
+
+
 
 
 
@@ -338,10 +383,10 @@ for para in doc.paragraphs:
 try:
     if '.' in content:  # 如果包含小数点，转换为浮点数
         suzi = float(content)
-        
+
     else:  # 否则转换为整数
         suzi = int(content)
-        
+
 except ValueError:
     print("文件内容不是一个有效的数字！")
     suzi = None  # 如果转换失败，将 a 设置为 None
@@ -361,10 +406,10 @@ for para in doc.paragraphs:
 try:
     if '.' in content:  # 如果包含小数点，转换为浮点数
         pipeisuzi = float(content)
-        
+
     else:  # 否则转换为整数
         pipeisuzi = int(content)
-        
+
 except ValueError:
     print("文件内容不是一个有效的数字！")
     pipeisuzi = None  # 如果转换失败，将 a 设置为 None
@@ -379,7 +424,7 @@ if __name__ == '__main__':
         messages = [{"role": "user", "content": text_batch}]
         culi(messages, api_key,fieldQ)
 from docx import Document
-    
+
 # 使用您的实际文件路径替换 'your_file_path.docx'
 
 # 获取当前脚本所在目录的绝对路径
