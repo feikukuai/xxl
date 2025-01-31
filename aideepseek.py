@@ -279,7 +279,7 @@ for i in range(1, len(doc.paragraphs)):
                     company_info['company_url'] = line.split(':')[1].strip()
                 elif line.startswith('模型:'):
                     company_info['model_name'] = line.split(':')[1].strip()
-                elif line.startswith('api:'):
+                elif line.startswith('接口:'):
                     company_info['api_key'] = line.split(':')[1].strip()
         
         companies.append(company_info)
