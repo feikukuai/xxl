@@ -306,17 +306,8 @@ else:
         print(f"未找到编号为 {first_number} 的公司信息！")
     else:
         print("文档中未找到有效的起始编号！")
-        
-
-
- 
- 
-
-
 
 input_file_path = 'input1.docx'
-
-
 
 # 确保ai处理的函数独立
 from openai import OpenAI
@@ -382,15 +373,6 @@ def culi(a, api_key,fieldQ):
 
     # 保存修改后的文档
     doc.save('output.docx')
-
-
-
-
-
-
-
-
-
 
 # 读取Word文档
 doc = Document('AIapi.docx')
