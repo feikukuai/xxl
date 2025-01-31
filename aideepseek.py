@@ -236,44 +236,81 @@ def read_text_from_doc(file_path, batch_size=500, min_batch_size=500, setup_info
     return text_batches
 
 
+ 
+doc = Document('apiword.docx')
+ 
+companies = []
+ 
+# 读取第一段作为first_number 
+if doc.paragraphs:
+    first_para = doc.paragraphs[0].text.strip()
+    if first_para and first_para[0].isdigit():
+        first_number = int(first_para)
+    else:
+        first_number = None 
+else:
+    first_number = None 
+ 
+# 处理剩下的段落 
+for i in range(1, len(doc.paragraphs)):
+    para = doc.paragraphs[i]
+    if para.text.strip() and para.text.strip()[0].isdigit():
+        number = int(para.text.strip())
+        company_info = {
+            'number': number,
+            'company_url': '',
+            'model_name': '',
+            'api_key': ''
+        }
+        
+        # 获取接下来的三段 
+        start_index = i + 1 
+        end_index = start_index + 3 
+        next_paragraphs = doc.paragraphs[start_index:end_index]
+        
+        # 确保有足够的段落数量 
+        if len(next_paragraphs) < 3:
+            # 不足三段，默认为空？
+            pass  # 或者根据需求处理 
+        else:
+            for j in range(3):
+                line = next_paragraphs[j].text.strip()
+                if line.startswith('公司:'):
+                    company_info['company_url'] = line.split(':')[1].strip()
+                elif line.startswith('模型:'):
+                    company_info['model_name'] = line.split(':')[1].strip()
+                elif line.startswith('api:'):
+                    company_info['api_key'] = line.split(':')[1].strip()
+        
+        companies.append(company_info)
+ 
+# 查找对应的公司信息 
+selected_company = None 
+if first_number is not None:
+    for company in companies:
+        if company['number'] == first_number:
+            selected_company = company 
+            break 
+ 
+if selected_company:
+    amx = selected_company['company_url']
+    bmx = selected_company['model_name']
+    cmx = selected_company['api_key']
+    
+    print(f"根据第一行数字 {first_number} 自动选择的公司信息：")
+    print(f"公司URL: {amx}")
+    print(f"模型名称: {bmx}")
+    print(f"API密钥: {cmx}")
+else:
+    if first_number is not None:
+        print(f"未找到编号为 {first_number} 的公司信息！")
+    else:
+        print("文档中未找到有效的起始编号！")
+        
+
 
  
  
-
-def extract_info_from_docx(document_content):
-    # 将字符串内容转换为Document对象
-    document = Document()
-    for line in document_content.strip().split('\n'):
-        if line.strip() != "":  # 忽略空行
-            document.add_paragraph(line)
-
-    # 读取第一行的数字，以确定需要提取哪个公司的信息
-    first_line_number = int(document.paragraphs[0].text.strip())
-
-    # 初始化变量
-    a, b = None, None
-
-    # 遍历文档中的段落
-    for i, paragraph in enumerate(document.paragraphs):
-        if paragraph.text.startswith(str(first_line_number)) and '公司:' in paragraph.text:
-            a = paragraph.text.split('公司:')[1].strip()
-        elif paragraph.text.startswith('模型:') and a is not None:
-            b = paragraph.text.split('模型:')[1].strip()
-            break
-
-    return a, b
-docx_file1 = 'apiword.docx'
-
-# 读取docx文件
-document_content1 = Document(docx_file1)
-# 使用函数并传入模拟的docx内容
-amx, bmx = extract_info_from_docx(document_content1)
-
-
-
-
-
-
 
 
 
@@ -367,7 +404,7 @@ for paragraph in doc.paragraphs:
 # 使用示例
 api_key = gpttext  # 应该从安全的地方获取
 
-
+api_key = cmx
 
 # 打开 .docx 文件
 doc = Document('suzi.docx')
