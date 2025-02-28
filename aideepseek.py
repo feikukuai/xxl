@@ -312,37 +312,30 @@ else:
         print("文档中未找到有效的起始编号！")
 
 input_file_path = 'input1.docx'
-
-# 确保ai处理的函数独立
-from openai import OpenAI
-
-from docx import Document
-
-from docx import Document
 from docx import Document
 
 def add_newline_after_comma(docx_path, output_path):
     doc = Document(docx_path)
     for para in doc.paragraphs:
         text = para.text
-        if '”' in text:
-            new_text = ""
-            last_quote_pos = -8  # 初始化为负数，确保第一个”不会受影响
-            
-            for i, char in enumerate(text):
-                if char == '”':
-                    # 检查当前”与上一个”之间的距离
-                    if i - last_quote_pos > 7:  # 距离超过7个字符
-                        new_text += char + '\n'
-                    else:
-                        new_text += char
-                    last_quote_pos = i
+        new_text = []
+        i = 0
+        while i < len(text):
+            if text[i] == '”':
+                # 查找前面最近的“
+                j = i - 1
+                while j >= 0 and text[j] != '“':
+                    j -= 1
+                # 如果找到了“，并且距离超过8个字符
+                if j >= 0 and (i - j) > 8:
+                    new_text.append('”\n')
                 else:
-                    new_text += char
-            
-            para.text = new_text
+                    new_text.append('”')
+            else:
+                new_text.append(text[i])
+            i += 1
+        para.text = ''.join(new_text)
     doc.save(output_path)
-
 # 使用示例
 # add_newline_after_comma('input.docx', 'output.docx')
     
