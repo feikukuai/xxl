@@ -324,7 +324,7 @@ def add_newline_after_comma(docx_path, output_path):
     doc = Document(docx_path)
     for para in doc.paragraphs:
         if '”' in para.text:
-            para.text = para.text.replace('，', '，\n')
+            para.text = para.text.replace('”', '”\n')
     doc.save(output_path)
 
 # 使用示例
