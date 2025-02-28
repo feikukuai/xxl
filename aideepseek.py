@@ -319,12 +319,28 @@ from openai import OpenAI
 from docx import Document
 
 from docx import Document
+from docx import Document
 
 def add_newline_after_comma(docx_path, output_path):
     doc = Document(docx_path)
     for para in doc.paragraphs:
-        if '”' in para.text:
-            para.text = para.text.replace('”', '”\n')
+        text = para.text
+        if '”' in text:
+            new_text = ""
+            last_quote_pos = -8  # 初始化为负数，确保第一个”不会受影响
+            
+            for i, char in enumerate(text):
+                if char == '”':
+                    # 检查当前”与上一个”之间的距离
+                    if i - last_quote_pos > 7:  # 距离超过7个字符
+                        new_text += char + '\n'
+                    else:
+                        new_text += char
+                    last_quote_pos = i
+                else:
+                    new_text += char
+            
+            para.text = new_text
     doc.save(output_path)
 
 # 使用示例
