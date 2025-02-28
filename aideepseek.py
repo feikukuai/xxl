@@ -312,6 +312,10 @@ else:
         print("文档中未找到有效的起始编号！")
 
 input_file_path = 'input1.docx'
+
+# 确保ai处理的函数独立
+from openai import OpenAI
+
 from docx import Document
 
 def add_newline_after_comma(docx_path, output_path):
@@ -336,6 +340,7 @@ def add_newline_after_comma(docx_path, output_path):
             i += 1
         para.text = ''.join(new_text)
     doc.save(output_path)
+
 # 使用示例
 # add_newline_after_comma('input.docx', 'output.docx')
     
