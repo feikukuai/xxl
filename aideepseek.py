@@ -318,6 +318,29 @@ from openai import OpenAI
 
 from docx import Document
 
+from docx import Document
+
+def add_newline_after_comma(docx_path, output_path):
+    doc = Document(docx_path)
+    for para in doc.paragraphs:
+        if '”' in para.text:
+            para.text = para.text.replace('，', '，\n')
+    doc.save(output_path)
+
+# 使用示例
+# add_newline_after_comma('input.docx', 'output.docx')
+    
+def remove_empty_paragraphs(doc_path):
+    doc = Document(doc_path)
+    paragraphs = doc.paragraphs
+    for para in paragraphs:
+        if not para.text.strip():
+            p = para._element
+            p.getparent().remove(p)
+    doc.save(doc_path)
+
+
+
 def culi(a, api_key,fieldQ):
     # 创建 OpenAI 客户端实例
     client = OpenAI(api_key=api_key, base_url=amx)
@@ -377,6 +400,8 @@ def culi(a, api_key,fieldQ):
 
     # 保存修改后的文档
     doc.save('output.docx')
+    add_newline_after_comma('output.docx', 'output.docx')
+    remove_empty_paragraphs('output.docx')
 
 # 读取Word文档
 doc = Document('AIapi.docx')
@@ -460,14 +485,9 @@ print("位置在于:")
 
 
 print(source_dir)
-def remove_empty_paragraphs(doc_path):
-    doc = Document(doc_path)
-    paragraphs = doc.paragraphs
-    for para in paragraphs:
-        if not para.text.strip():
-            p = para._element
-            p.getparent().remove(p)
-    doc.save(doc_path)
 
+
+
+# 使用示例
+# add_newline_after_comma('input.docx', 'output.docx')
 # 调用函数，替换成你的文档路径
-remove_empty_paragraphs('output.docx')
