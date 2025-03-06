@@ -31,7 +31,7 @@ class StrictAPIExtension {
             },
             KEY: {
               type: Scratch.ArgumentType.STRING,
-              defaultValue: 'sk-yopwqmeuoeillmajulygkjalyspdgdbzlkpjjgblexnuxosb'
+              defaultValue: '你的key'
             }
           }
         },
@@ -54,10 +54,10 @@ class StrictAPIExtension {
         voiceList: {
           acceptReporters: true,
           items: [
-            { text: '👨 男声-Alex', value: 'alex' },
-            { text: '👩 女声-安娜', value: 'anna' },
-            { text: '👦 童声-david', value: 'david' },
-            { text: '✎ 自定义音色本杰明', value: 'benjamin' }
+            { text: 'alex', value: 'alex' },
+            { text: 'anna', value: 'anna' },
+            { text: 'david', value: 'david' },
+            { text: 'benjamin', value: 'benjamin' }
           ]
         }
       }
