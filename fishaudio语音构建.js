@@ -1,6 +1,9 @@
 class StrictAPIExtension {
   constructor() {
     this.lastResponse = null;
+    // 初始化默认模型和音色
+    this.defaultModel = 'FunAudioLLM/CosyVoice2-0.5B';
+    this.defaultVoice = 'alex';
   }
 
   getInfo() {
@@ -18,12 +21,12 @@ class StrictAPIExtension {
             MODEL: {
               type: Scratch.ArgumentType.STRING,
               menu: 'modelList',
-              defaultValue: 'FunAudioLLM/CosyVoice2-0.5B'
+              defaultValue: this.defaultModel // 使用默认模型
             },
             VOICE: {
               type: Scratch.ArgumentType.STRING,
               menu: 'voiceList',
-              defaultValue: 'alex'
+              defaultValue: this.defaultVoice // 使用默认音色
             },
             TEXT: {
               type: Scratch.ArgumentType.STRING,
@@ -39,6 +42,30 @@ class StrictAPIExtension {
           opcode: 'getLastResult',
           blockType: Scratch.BlockType.REPORTER,
           text: '获取最后一次响应'
+        },
+        {
+          opcode: 'setDefaultModel',
+          blockType: Scratch.BlockType.COMMAND,
+          text: '设置默认模型 [MODEL]',
+          arguments: {
+            MODEL: {
+              type: Scratch.ArgumentType.STRING,
+              menu: 'modelList',
+              defaultValue: this.defaultModel
+            }
+          }
+        },
+        {
+          opcode: 'setDefaultVoice',
+          blockType: Scratch.BlockType.COMMAND,
+          text: '设置默认音色 [VOICE]',
+          arguments: {
+            VOICE: {
+              type: Scratch.ArgumentType.STRING,
+              menu: 'voiceList',
+              defaultValue: this.defaultVoice
+            }
+          }
         }
       ],
       menus: {
@@ -66,12 +93,13 @@ class StrictAPIExtension {
 
   strictCall(args) {
     return new Promise((resolve) => {
-      // 处理自定义输入
-      const finalModel = args.MODEL === 'custom' ? 
-        Scratch.Cast.toString(args.MODEL) : args.MODEL;
-      
-      const finalVoice = args.VOICE === 'custom' ?
-        Scratch.Cast.toString(args.VOICE) : args.VOICE;
+      // 获取用户输入的模型和音色，如果未输入则使用默认值
+      const finalModel = Scratch.Cast.toString(args.MODEL) || this.defaultModel;
+      const finalVoice = Scratch.Cast.toString(args.VOICE) || this.defaultVoice;
+
+      // 更新默认模型和音色
+      this.defaultModel = finalModel;
+      this.defaultVoice = finalVoice;
 
       const requestBody = {
         model: finalModel,
@@ -102,6 +130,16 @@ class StrictAPIExtension {
         resolve(errorResult);
       });
     });
+  }
+
+  setDefaultModel(args) {
+    // 设置默认模型
+    this.defaultModel = Scratch.Cast.toString(args.MODEL);
+  }
+
+  setDefaultVoice(args) {
+    // 设置默认音色
+    this.defaultVoice = Scratch.Cast.toString(args.VOICE);
   }
 
   getLastResult() {
