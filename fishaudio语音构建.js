@@ -12,7 +12,7 @@ class StrictAPIExtension {
       blocks: [
         {
           opcode: 'strictCall',
-          blockType: Scratch.BlockType.REPORTER,
+          blockType: Scratch.BlockType.COMMAND,
           text: '语音合成 模型 [MODEL] 音色 [VOICE] 文本 [TEXT] 密钥 [KEY]',
           arguments: {
             MODEL: {
