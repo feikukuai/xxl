@@ -20,13 +20,11 @@ class StrictAPIExtension {
           arguments: {
             MODEL: {
               type: Scratch.ArgumentType.STRING,
-              menu: 'modelList',
-              defaultValue: this.defaultModel // 使用默认模型
+              defaultValue: this.defaultModel // 直接使用用户输入的文本
             },
             VOICE: {
               type: Scratch.ArgumentType.STRING,
-              menu: 'voiceList',
-              defaultValue: this.defaultVoice // 使用默认音色
+              defaultValue: this.defaultVoice // 直接使用用户输入的文本
             },
             TEXT: {
               type: Scratch.ArgumentType.STRING,
@@ -50,7 +48,6 @@ class StrictAPIExtension {
           arguments: {
             MODEL: {
               type: Scratch.ArgumentType.STRING,
-              menu: 'modelList',
               defaultValue: this.defaultModel
             }
           }
@@ -62,32 +59,11 @@ class StrictAPIExtension {
           arguments: {
             VOICE: {
               type: Scratch.ArgumentType.STRING,
-              menu: 'voiceList',
               defaultValue: this.defaultVoice
             }
           }
         }
-      ],
-      menus: {
-        modelList: {
-          acceptReporters: true,
-          items: [
-            { text: '🐟 fishaudio模型', value: 'FunAudioLLM/CosyVoice2-0.5B' },
-            { text: '🤖 GPT语音模型', value: 'RVC-Boss/GPT-SoVITS' },
-            { text: '🧠 深度语音模型', value: 'deepseek-tts/1.0' },
-            { text: '✎ 自定义模型', value: 'custom' }
-          ]
-        },
-        voiceList: {
-          acceptReporters: true,
-          items: [
-            { text: 'alex', value: 'alex' },
-            { text: 'anna', value: 'anna' },
-            { text: 'david', value: 'david' },
-            { text: 'benjamin', value: 'benjamin' }
-          ]
-        }
-      }
+      ]
     };
   }
 
