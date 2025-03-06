@@ -18,7 +18,7 @@ class StrictAPIExtension {
             MODEL: {
               type: Scratch.ArgumentType.STRING,
               menu: 'modelList',
-              defaultValue: 'fishaudio/fish-speech-2.0'
+              defaultValue: 'FunAudioLLM/CosyVoice2-0.5B'
             },
             VOICE: {
               type: Scratch.ArgumentType.STRING,
@@ -31,7 +31,7 @@ class StrictAPIExtension {
             },
             KEY: {
               type: Scratch.ArgumentType.STRING,
-              defaultValue: 'sk-your-token'
+              defaultValue: 'sk-yopwqmeuoeillmajulygkjalyspdgdbzlkpjjgblexnuxosb'
             }
           }
         },
@@ -45,7 +45,7 @@ class StrictAPIExtension {
         modelList: {
           acceptReporters: true,
           items: [
-            { text: '🐟 fishaudio模型', value: 'fishaudio/fish-speech-2.0' },
+            { text: '🐟 fishaudio模型', value: 'FunAudioLLM/CosyVoice2-0.5B' },
             { text: '🤖 GPT语音模型', value: 'RVC-Boss/GPT-SoVITS' },
             { text: '🧠 深度语音模型', value: 'deepseek-tts/1.0' },
             { text: '✎ 自定义模型', value: 'custom' }
