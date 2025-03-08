@@ -500,8 +500,7 @@ print("位置在于:")
 
 print(source_dir)
 
-
-
+remove_empty_paragraphs('output.docx')
 # 使用示例
 # add_newline_after_comma('input.docx', 'output.docx')
 # 调用函数，替换成你的文档路径
