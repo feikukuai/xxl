@@ -290,10 +290,6 @@ for i in range(1, len(doc.paragraphs)):
                     company_info['api_key'] = line.split(':')[1].strip()
                 elif line.startswith('温度:'):
                     company_info['temperature_key'] = line.split(':', 1)[1].strip()
-                elif line.startswith('多样性:'):
-                    company_info['Diversity_key'] = line.split(':', 1)[1].strip()
-                elif line.startswith('惩罚:'):
-                    company_info['Frequency_key'] = line.split(':', 1)[1].strip()
                     
 
         companies.append(company_info)
@@ -367,7 +363,7 @@ def remove_empty_paragraphs(doc_path):
             p.getparent().remove(p)
     doc.save(doc_path)
 
-dmx = dmx.strip()  # 去除首尾空格
+
 dmx = float(dmx)
 
 def culi(a, api_key,fieldQ):
@@ -376,9 +372,9 @@ def culi(a, api_key,fieldQ):
 
     # 使用传入的消息列表a进行聊天
     response = client.chat.completions.create(
-        model=bmx,
-        messages=a,
-        temperature=dmx
+        model= bmx,
+        messages = a,
+        temperature=0.3
     )
 
     # 将API的响应添加到消息列表中
