@@ -236,11 +236,11 @@ def read_text_from_doc(file_path, batch_size=500, min_batch_size=500, setup_info
     return text_batches
 
 
- 
+
 doc = Document('apiword.docx')
- 
+
 companies = []
- 
+
 # 读取第一段作为first_number 
 if doc.paragraphs:
     first_para = doc.paragraphs[0].text.strip()
@@ -250,7 +250,7 @@ if doc.paragraphs:
         first_number = None 
 else:
     first_number = None 
- 
+
 # 处理剩下的段落 
 for i in range(1, len(doc.paragraphs)):
     para = doc.paragraphs[i]
@@ -262,12 +262,12 @@ for i in range(1, len(doc.paragraphs)):
             'model_name': '',
             'api_key': ''
         }
-        
+
         # 获取接下来的三段 
         start_index = i + 1 
         end_index = start_index + 3 
         next_paragraphs = doc.paragraphs[start_index:end_index]
-        
+
         # 确保有足够的段落数量 
         if len(next_paragraphs) < 3:
             # 不足三段，默认为空？
@@ -282,12 +282,12 @@ for i in range(1, len(doc.paragraphs)):
                    else:
                       company_info['company_url'] = ""  # 或者处理其他情况
                 elif line.startswith('模型:'):
-                    company_info['model_name'] = line.split(':')[1].strip()
+                    company_info['model_name'] = line.split(':', 1)[1].strip()
                 elif line.startswith('api:'):
                     company_info['api_key'] = line.split(':')[1].strip()
-        
+
         companies.append(company_info)
- 
+
 # 查找对应的公司信息 
 selected_company = None 
 if first_number is not None:
@@ -295,12 +295,12 @@ if first_number is not None:
         if company['number'] == first_number:
             selected_company = company 
             break 
- 
+
 if selected_company:
     amx = selected_company['company_url']
     bmx = selected_company['model_name']
     cmx = selected_company['api_key']
-    
+
     print(f"根据第一行数字 {first_number} 自动选择的公司信息：")
     print(f"公司URL: {amx}")
     print(f"模型名称: {bmx}")
@@ -343,7 +343,7 @@ def add_newline_after_comma(docx_path, output_path):
 
 # 使用示例
 # add_newline_after_comma('input.docx', 'output.docx')
-    
+
 def remove_empty_paragraphs(doc_path):
     doc = Document(doc_path)
     paragraphs = doc.paragraphs
