@@ -367,7 +367,8 @@ def remove_empty_paragraphs(doc_path):
             p.getparent().remove(p)
     doc.save(doc_path)
 
-
+dmx = dmx.strip()  # 去除首尾空格
+dmx = float(dmx)
 
 def culi(a, api_key,fieldQ):
     # 创建 OpenAI 客户端实例
