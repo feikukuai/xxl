@@ -288,6 +288,14 @@ for i in range(1, len(doc.paragraphs)):
 
         companies.append(company_info)
 
+# 加载 .docx 文件
+doc = Document("temperature.docx")  # 替换为你的文件路径
+
+# 读取第一个段落的文本并转换为浮点数
+dmx = float(doc.paragraphs[0].text.strip())
+
+print(f"读取到的温度参数wengdu：{dmx}")
+
 # 查找对应的公司信息 
 selected_company = None 
 if first_number is not None:
@@ -363,7 +371,7 @@ def culi(a, api_key,fieldQ):
     response = client.chat.completions.create(
         model=bmx,
         messages=a, 
-        temperature=0.3 
+        temperature=dmx 
     )
 
     # 将API的响应添加到消息列表中
