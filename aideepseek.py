@@ -318,9 +318,7 @@ if selected_company:
     print(f"公司URL: {amx}")
     print(f"模型名称: {bmx}")
     print(f"API密钥: {cmx}")
-    print(f"温度: {dmx}")
-    print(f"多样性: {emx}")
-    print(f"惩罚: {gmx}")
+    print(f"温度wd: {dmx}")
 else:
     if first_number is not None:
         print(f"未找到编号为 {first_number} 的公司信息！")
@@ -379,9 +377,7 @@ def culi(a, api_key,fieldQ):
     response = client.chat.completions.create(
         model=bmx,
         messages=a,
-        temperature=dmx,
-        top_p=emx,
-        frequency_penalty=gmx
+        temperature=dmx
     )
 
     # 将API的响应添加到消息列表中
