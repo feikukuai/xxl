@@ -260,23 +260,20 @@ for i in range(1, len(doc.paragraphs)):
             'number': number,
             'company_url': '',
             'model_name': '',
-            'api_key': '',
-            'temperature_key': '',
-            'Diversity_key': '',
-            'Frequency_key': ''
+            'api_key': ''
         }
 
-        # 获取接下来的七段 
+        # 获取接下来的三段 
         start_index = i + 1 
-        end_index = start_index + 6 
+        end_index = start_index + 3 
         next_paragraphs = doc.paragraphs[start_index:end_index]
 
         # 确保有足够的段落数量 
-        if len(next_paragraphs) < 6:
-            # 不足七段，默认为空？
+        if len(next_paragraphs) < 3:
+            # 不足三段，默认为空？
             pass  # 或者根据需求处理 
         else:
-            for j in range(6):
+            for j in range(3):
                 line = next_paragraphs[j].text.strip()
                 if line.startswith('公司:'):
                    h_index = line.find('h')
@@ -285,12 +282,9 @@ for i in range(1, len(doc.paragraphs)):
                    else:
                       company_info['company_url'] = ""  # 或者处理其他情况
                 elif line.startswith('模型:'):
-                    company_info['model_name'] = line.split(':', 1)[1].strip()
+                    company_info['model_name'] = line.split(':')[1].strip()
                 elif line.startswith('api:'):
                     company_info['api_key'] = line.split(':')[1].strip()
-                elif line.startswith('温度:'):
-                    company_info['temperature_key'] = line.split(':', 1)[1].strip()
-                    
 
         companies.append(company_info)
 
@@ -306,15 +300,11 @@ if selected_company:
     amx = selected_company['company_url']
     bmx = selected_company['model_name']
     cmx = selected_company['api_key']
-    dmx = selected_company['temperature_key']
-    emx = selected_company['Diversity_key']
-    gmx = selected_company['Frequency_key'] 
 
     print(f"根据第一行数字 {first_number} 自动选择的公司信息：")
     print(f"公司URL: {amx}")
     print(f"模型名称: {bmx}")
     print(f"API密钥: {cmx}")
-    print(f"温度wd: {dmx}")
 else:
     if first_number is not None:
         print(f"未找到编号为 {first_number} 的公司信息！")
@@ -364,7 +354,6 @@ def remove_empty_paragraphs(doc_path):
     doc.save(doc_path)
 
 
-dmx = float(dmx)
 
 def culi(a, api_key,fieldQ):
     # 创建 OpenAI 客户端实例
@@ -372,9 +361,9 @@ def culi(a, api_key,fieldQ):
 
     # 使用传入的消息列表a进行聊天
     response = client.chat.completions.create(
-        model= bmx,
-        messages = a,
-        temperature=0.3
+        model=bmx,
+        messages=a, 
+        temperature=0.3 
     )
 
     # 将API的响应添加到消息列表中
@@ -515,4 +504,4 @@ print(source_dir)
 remove_empty_paragraphs('output.docx')
 # 使用示例
 # add_newline_after_comma('input.docx', 'output.docx')
-# 调用函数，替换成你的文档路径改动
+# 调用函数，替换成你的文档路径
