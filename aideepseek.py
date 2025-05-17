@@ -1,7 +1,7 @@
 from docx import Document
 # 获取当前脚本所在目录的绝对路径
 import os
-
+import configparser
 # 获取Python解释器（或exe）所在目录
 exe_dir = os.path.dirname(sys.executable)
 print(exe_dir)
@@ -235,96 +235,29 @@ def read_text_from_doc(file_path, batch_size=500, min_batch_size=500, setup_info
     #  text_batches[i] = text_batches[i] + "" + text2
     return text_batches
 
+config = configparser.ConfigParser()
 
+# 读取配置文件
+config.read('config.ini')
+digit = config.get('参量配置', 'digit')
+ConfigurationNumber = config.get('参量配置', 'ConfigurationNumber')
+choose = config.get('参量配置', 'choose')
+section = f'数据库配置{choose}'
+company = config.get(section, 'company')
+model = config.get(section, 'model')
+api = config.get(section, 'api')
+temperature = config.get(section, 'temperature')
 
-doc = Document('apiword.docx')
-
-companies = []
-
-# 读取第一段作为first_number 
-if doc.paragraphs:
-    first_para = doc.paragraphs[0].text.strip()
-    if first_para and first_para[0].isdigit():
-        first_number = int(first_para)
-    else:
-        first_number = None 
-else:
-    first_number = None 
-
-# 处理剩下的段落 
-for i in range(1, len(doc.paragraphs)):
-    para = doc.paragraphs[i]
-    if para.text.strip() and para.text.strip()[0].isdigit():
-        number = int(para.text.strip())
-        company_info = {
-            'number': number,
-            'company_url': '',
-            'model_name': '',
-            'api_key': ''
-        }
-
-        # 获取接下来的三段 
-        start_index = i + 1 
-        end_index = start_index + 3 
-        next_paragraphs = doc.paragraphs[start_index:end_index]
-
-        # 确保有足够的段落数量 
-        if len(next_paragraphs) < 3:
-            # 不足三段，默认为空？
-            pass  # 或者根据需求处理 
-        else:
-            for j in range(3):
-                line = next_paragraphs[j].text.strip()
-                if line.startswith('公司:'):
-                   h_index = line.find('h')
-                   if h_index != -1:
-                      company_info['company_url'] = line[h_index:].strip()
-                   else:
-                      company_info['company_url'] = ""  # 或者处理其他情况
-                elif line.startswith('模型:'):
-                    company_info['model_name'] = line.split(':', 1)[1].strip()
-                elif line.startswith('api:'):
-                    company_info['api_key'] = line.split(':', 1)[1].strip()
-
-        companies.append(company_info)
-
-# 加载 .docx 文件
-doc = Document("temperature.docx")  # 替换为你的文件路径
-
-# 读取第一个段落的文本并转换为浮点数
-dmx = float(doc.paragraphs[0].text.strip())
-
-print(f"读取到的温度参数wengdu：{dmx}")
-
-# 查找对应的公司信息 
-selected_company = None 
-if first_number is not None:
-    for company in companies:
-        if company['number'] == first_number:
-            selected_company = company 
-            break 
-
-if selected_company:
-    amx = selected_company['company_url']
-    bmx = selected_company['model_name']
-    cmx = selected_company['api_key']
-
-    print(f"根据第一行数字 {first_number} 自动选择的公司信息：")
-    print(f"公司URL: {amx}")
-    print(f"模型名称: {bmx}")
-    print(f"API密钥: {cmx}")
-else:
-    if first_number is not None:
-        print(f"未找到编号为 {first_number} 的公司信息！")
-    else:
-        print("文档中未找到有效的起始编号！")
-
-input_file_path = 'input1.docx'
+    # 打印结果
+print(f"Company: {company}")
+print(f"Model: {model}")
+print(f"API: {api}")
+print(f"Temperature: {temperature}")
 
 # 确保ai处理的函数独立
 from openai import OpenAI
 
-from docx import Document
+
 
 def add_newline_after_comma(docx_path, output_path):
     doc = Document(docx_path)
@@ -365,13 +298,13 @@ def remove_empty_paragraphs(doc_path):
 
 def culi(a, api_key,fieldQ):
     # 创建 OpenAI 客户端实例
-    client = OpenAI(api_key=api_key, base_url=amx)
+    client = OpenAI(api_key=api, base_url=company)
 
     # 使用传入的消息列表a进行聊天
     response = client.chat.completions.create(
-        model=bmx,
+        model=model,
         messages=a, 
-        temperature=dmx 
+        temperature=temperature 
     )
 
     # 将API的响应添加到消息列表中
@@ -426,67 +359,10 @@ def culi(a, api_key,fieldQ):
     add_newline_after_comma('output.docx', 'output.docx')
     remove_empty_paragraphs('output.docx')
 
-# 读取Word文档
-doc = Document('AIapi.docx')
 
-gpttext = ''
-
-# 提取段落文本
-for paragraph in doc.paragraphs:
-    gpttext += paragraph.text  # 保留段落换行
-
-# 使用示例
-api_key = gpttext  # 应该从安全的地方获取
-
-api_key = cmx
-
-# 打开 .docx 文件
-doc = Document('suzi.docx')
-
-# 初始化一个空字符串来存储文档内容
-content = ''
-
-# 遍历文档中的每个段落，并将其内容添加到变量 content 中
-for para in doc.paragraphs:
-    content += para.text.strip()  # 使用 strip() 去除空白字符
-
-# 假设 content 是一个数字，将其转换为整数或浮点数
-try:
-    if '.' in content:  # 如果包含小数点，转换为浮点数
-        suzi = float(content)
-
-    else:  # 否则转换为整数
-        suzi = int(content)
-
-except ValueError:
-    print("文件内容不是一个有效的数字！")
-    suzi = None  # 如果转换失败，将 a 设置为 None
-
-
-# 打开 .docx 文件
-doc = Document('pipeisuzi.docx')
-
-# 初始化一个空字符串来存储文档内容
-content = ''
-
-# 遍历文档中的每个段落，并将其内容添加到变量 content 中
-for para in doc.paragraphs:
-    content += para.text.strip()  # 使用 strip() 去除空白字符
-
-# 假设 content 是一个数字，将其转换为整数或浮点数
-try:
-    if '.' in content:  # 如果包含小数点，转换为浮点数
-        pipeisuzi = float(content)
-
-    else:  # 否则转换为整数
-        pipeisuzi = int(content)
-
-except ValueError:
-    print("文件内容不是一个有效的数字！")
-    pipeisuzi = None  # 如果转换失败，将 a 设置为 None
-
-
-
+api_key = api  # 应该从安全的地方获取
+suzi = digit
+pipeisuzi = ConfigurationNumber
 if __name__ == '__main__':
     text2 = ""
     text_batches = read_text_from_doc(input_file_path, setup_info=text2)
