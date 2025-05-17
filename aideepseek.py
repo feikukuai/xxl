@@ -238,7 +238,7 @@ def read_text_from_doc(file_path, batch_size=500, min_batch_size=500, setup_info
 config = configparser.ConfigParser()
 
 # 读取配置文件
-config.read('config.ini')
+config.read('config.ini', encoding='utf-8')
 digit = config.get('参量配置', 'digit')
 ConfigurationNumber = config.get('参量配置', 'ConfigurationNumber')
 choose = config.get('参量配置', 'choose')
@@ -248,7 +248,6 @@ model = config.get(section, 'model')
 api = config.get(section, 'api')
 temperature = config.get(section, 'temperature')
 
-    # 打印结果
 print(f"Company: {company}")
 print(f"Model: {model}")
 print(f"API: {api}")
