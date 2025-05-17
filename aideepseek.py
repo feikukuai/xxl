@@ -362,6 +362,7 @@ def culi(a, api_key,fieldQ):
 
 api_key = api  # 应该从安全的地方获取
 suzi = digit
+suzi = int(suzi)
 pipeisuzi = ConfigurationNumber
 if __name__ == '__main__':
     text2 = ""
