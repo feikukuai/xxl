@@ -53,6 +53,7 @@ print(replacement_rules)
 
 # 检查并打开docx文件
 doc_path = os.path.join(script_dir, 'input1.docx')
+input_file_path = doc_path
 if not os.path.exists(doc_path):
     raise FileNotFoundError("找不到文件：input1.docx")
 
