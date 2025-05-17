@@ -241,13 +241,16 @@ config = configparser.ConfigParser()
 # 读取配置文件
 config.read('config.ini', encoding='utf-8')
 digit = config.get('参量配置', 'digit')
+digit = int(digit)
 ConfigurationNumber = config.get('参量配置', 'ConfigurationNumber')
+ConfigurationNumber = float(ConfigurationNumber)
 choose = config.get('参量配置', 'choose')
 section = f'数据库配置{choose}'
 company = config.get(section, 'company')
 model = config.get(section, 'model')
 api = config.get(section, 'api')
 temperature = config.get(section, 'temperature')
+temperature = float(temperature)
 
 print(f"Company: {company}")
 print(f"Model: {model}")
