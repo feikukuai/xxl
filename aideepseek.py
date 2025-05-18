@@ -242,6 +242,8 @@ config = configparser.ConfigParser()
 config.read('config.ini', encoding='utf-8')
 digit = config.get('参量配置', 'digit')
 digit = int(digit)
+urlswitch = config.get('参量配置', 'urlswitch')
+urlswitch = int(urlswitch)
 ConfigurationNumber = config.get('参量配置', 'ConfigurationNumber')
 ConfigurationNumber = float(ConfigurationNumber)
 choose = config.get('参量配置', 'choose')
@@ -253,7 +255,7 @@ temperature = config.get(section, 'temperature')
 temperature = float(temperature)
 
 with open('Specialconfig.ini', encoding='utf-8') as f:
-    if (content := f.read().strip()) and choose == 1:
+    if (content := f.read().strip()) and urlswitch == 1:
         company = content + "v1"
         
 print(f"Company: {company}")
