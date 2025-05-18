@@ -253,7 +253,7 @@ temperature = config.get(section, 'temperature')
 temperature = float(temperature)
 
 with open('Specialconfig.ini', encoding='utf-8') as f:
-    if (content := f.read().strip()) and digit == 1:
+    if (content := f.read().strip()) and choose == 1:
         company = content + "v1"
         
 print(f"Company: {company}")
