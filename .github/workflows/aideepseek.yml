@@ -31,6 +31,8 @@ jobs:
 
       - name: Install ai
         run: pip3 install openai
+      - name: Install paramiko
+        run: pip install paramiko
 
       # 构建可执行文件
       - name: Build EXE
