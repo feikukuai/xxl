@@ -276,33 +276,12 @@ print(f"Temperature: {temperature}")
 
 
 #端口ssh转发
-
+# 端口SSH转发
 
 # 存储的SSH命令文本
 
-# 使用正则表达式来匹配和提取参数
-match = re.match(r'ssh -p (\d+) (\S+)@(\S+)', sshtext)
-if match:
-    # 提取端口号、用户名和主机名
-    port = match.group(1)
-    username = match.group(2)
-    hostname = match.group(3)
-
-    # 打印提取的参数
-    print(f"Port: {port}")
-    print(f"Username: {username}")
-    print(f"Hostname: {hostname}")
-
-    # 根据提取的参数进行后续操作，例如建立SSH连接
-    # ...
-
-else:
-    print("无法解析SSH命令")
-
-
 # SSH连接参数
-
-password = 'fnWZvpqd+VAIRJxaZdV1KVMFfDgcCjYrP2VSWQ68T'  # 替换为你的密码
+password = 'fnWZvpqd+VAIRJxaZdV1KVMFfDgcCjYrP2VSWQ68T'  # 替换为你的密码
 
 # 本地端口转发参数
 local_port = 11434
@@ -314,41 +293,37 @@ ssh_client = paramiko.SSHClient()
 ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
 try:
-    # 连接到SSH服务器
-    ssh_client.connect(hostname, port=port, username=username, password=password)
+    # 连接到SSH服务器
+    ssh_client.connect(hostname, port=port, username=username, password=password)
 
-    # 创建本地端口转发
-    transport = ssh_client.get_transport()
-    local_forward = transport.request_port_forward('', local_port)
+    # 创建本地端口转发
+    transport = ssh_client.get_transport()
+    local_forward = transport.request_port_forward('', local_port)
 
-    # 创建一个本地服务器套接字
-    local_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    local_socket.bind(('', local_port))
-    local_socket.listen(5)
+    # 创建一个本地服务器套接字
+    local_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    local_socket.bind(('', local_port))
+    local_socket.listen(5)
 
-    while True:
-        # 接受本地连接
-        client_socket, client_address = local_socket.accept()
-        print(f"Accepted connection from {client_address}")
+    while True:
+        # 接受本地连接
+        client_socket, client_address = local_socket.accept()
+        print(f"Accepted connection from {client_address}")
 
-        # 创建一个通道
-        channel = transport.open_channel('direct-tcpip', (remote_host, remote_port), client_address)
+        # 创建一个通道
+        channel = transport.open_channel('direct-tcpip', (remote_host, remote_port), client_address)
 
-        # 处理数据
-        while True:
-            data = client_socket.recv(4096)
-            if not data:
-                break
-            channel.send(data)
+        # 处理数据
+        while True:
+            data = client_socket.recv(4096)
+            if not data:
+                break
+            channel.send(data)
 
-            data = channel.recv(4096)
-            if not data:
-                break
-            client_socket.send(data)
-
-
-
-
+            data = channel.recv(4096)
+            if not data:
+                break
+            client_socket.send(data)
 # 确保ai处理的函数独立
 from openai import OpenAI
 
