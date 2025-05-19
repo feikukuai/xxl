@@ -2,7 +2,7 @@ from docx import Document
 # 获取当前脚本所在目录的绝对路径
 import os
 import configparser
-
+import select
 import re
 import paramiko
 import socket
@@ -276,11 +276,32 @@ print(f"Temperature: {temperature}")
 
 
 #端口ssh转发
-# 端口SSH转发
+
 
 # 存储的SSH命令文本
 
+# 使用正则表达式来匹配和提取参数
+match = re.match(r'ssh -p (\d+) (\S+)@(\S+)', sshtext)
+if match:
+    # 提取端口号、用户名和主机名
+    port = match.group(1)
+    username = match.group(2)
+    hostname = match.group(3)
+
+    # 打印提取的参数
+    print(f"Port: {port}")
+    print(f"Username: {username}")
+    print(f"Hostname: {hostname}")
+
+    # 根据提取的参数进行后续操作，例如建立SSH连接
+    # ...
+
+else:
+    print("无法解析SSH命令")
+
+
 # SSH连接参数
+
 password = 'fnWZvpqd+VAIRJxaZdV1KVMFfDgcCjYrP2VSWQ68T'  # 替换为你的密码
 
 # 本地端口转发参数
@@ -302,31 +323,77 @@ try:
 
     # 创建一个本地服务器套接字
     local_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    local_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)  # 允许端口复用
     local_socket.bind(('', local_port))
     local_socket.listen(5)
 
+    print(f"Local port forwarding established on port {local_port}")
+
     while True:
         # 接受本地连接
-        client_socket, client_address = local_socket.accept()
-        print(f"Accepted connection from {client_address}")
+        readable, _, _ = select.select([local_socket], [], [], 1.0)
+        if local_socket in readable:
+            client_socket, client_address = local_socket.accept()
+            print(f"Accepted connection from {client_address}")
 
-        # 创建一个通道
-        channel = transport.open_channel('direct-tcpip', (remote_host, remote_port), client_address)
+            try:
+                # 创建一个通道
+                channel = transport.open_channel(
+                    'direct-tcpip',
+                    (remote_host, remote_port),
+                    client_address
+                )
 
-        # 处理数据
-        while True:
-            data = client_socket.recv(4096)
-            if not data:
-                break
-            channel.send(data)
+                # 处理数据（双向通信）
+                while True:
+                    r, _, _ = select.select([client_socket, channel], [], [], 1.0)
+                    if client_socket in r:
+                        data = client_socket.recv(4096)
+                        if not data:
+                            break
+                        channel.send(data)
 
-            data = channel.recv(4096)
-            if not data:
-                break
-            client_socket.send(data)
-            
-# 确保ai处理的函数
+                    if channel in r:
+                        data = channel.recv(4096)
+                        if not data:
+                            break
+                        client_socket.send(data)
+
+            except (socket.error, paramiko.SSHException) as e:
+                print(f"Connection error: {e}")
+            finally:
+                # 确保关闭客户端socket和通道
+                try:
+                    client_socket.close()
+                except:
+                    pass
+                try:
+                    channel.close()
+                except:
+                    pass
+                print(f"Connection from {client_address} closed")
+
+except KeyboardInterrupt:
+    print("Received interrupt, shutting down...")
+except (paramiko.SSHException, socket.error) as e:
+    print(f"Error: {e}")
+finally:
+    # 确保关闭所有资源
+    try:
+        local_socket.close()
+    except:
+        pass
+    try:
+        ssh_client.close()
+    except:
+        pass
+    print("SSH client and local socket closed")
+
+# 确保ai处理的函数独立
 from openai import OpenAI
+
+
+
 def add_newline_after_comma(docx_path, output_path):
     doc = Document(docx_path)
     for para in doc.paragraphs:
