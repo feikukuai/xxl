@@ -324,11 +324,9 @@ try:
             if not data:
                 break
             client_socket.send(data)
-# 确保ai处理的函数独立
+            
+# 确保ai处理的函数
 from openai import OpenAI
-
-
-
 def add_newline_after_comma(docx_path, output_path):
     doc = Document(docx_path)
     for para in doc.paragraphs:
