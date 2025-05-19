@@ -275,30 +275,25 @@ print(f"API: {api}")
 print(f"Temperature: {temperature}")
 
 
-#端口ssh转发
-
-
 # 存储的SSH命令文本
 
-# 使用正则表达式来匹配和提取参数
+# 使用正则表达式匹配和提取参数
 match = re.match(r'ssh -p (\d+) (\S+)@(\S+)', sshtext)
 if match:
-    # 提取端口号、用户名和主机名
-    port = match.group(1)
-    username = match.group(2)
-    hostname = match.group(3)
+    # 提取端口号、用户名和主机名
+    port = match.group(1)
+    username = match.group(2)
+    hostname = match.group(3)
 
-    # 打印提取的参数
-    print(f"Port: {port}")
-    print(f"Username: {username}")
-    print(f"Hostname: {hostname}")
+    # 打印提取的参数
+    print(f"Port: {port}")
+    print(f"Username: {username}")
+    print(f"Hostname: {hostname}")
 
-    # 根据提取的参数进行后续操作，例如建立SSH连接
-    # ...
-
+    # 根据提取的参数进行后续操作，例如建立SSH连接
+    # ...
 else:
-    print("无法解析SSH命令")
-
+    print("无法解析SSH命令")
 
 # SSH连接参数
 
